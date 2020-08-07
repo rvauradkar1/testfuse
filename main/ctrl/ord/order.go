@@ -1,18 +1,27 @@
 package ord
 
-type IOrderService interface {
-	findOrder() string
-	saveOrder() string
+import (
+	"fmt"
+
+	"github.com/rvauradkar1/testfuse/main/ctrl/cache"
+	"github.com/rvauradkar1/testfuse/main/ctrl/ord/db"
+)
+
+type IService interface {
+	SaveOrder(order string) error
 }
 
-type OrderService struct {
+type Service struct {
+	CacheSvc cache.IService `_fuse:"CacheSvc"`
+	DBSvc    db.IService    `_fuse:"DBSvc"`
 }
 
-func (o *OrderService) findOrder() string {
-	return o.T
-}
-
-func (o *OrderService) saveOrder() string {
-	o.Status = "Saved"
-	return "saved"
+func (o *Service) SaveOrder(order string) error {
+	fmt.Println("Begin of AddOrder  on OrderSvc")
+	err := o.DBSvc.AddOrder(order)
+	if err != nil {
+		return err
+	}
+	o.CacheSvc.AddOrder(order)
+	return nil
 }

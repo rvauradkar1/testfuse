@@ -1,19 +1,37 @@
 package db
 
-type IDBService interface {
-	saveOrder(order string)
+var cartCounts map[string]*int
+var orderCounts map[string]*int
+
+func init() {
+	cartCounts = make(map[string]*int, 0)
+	orderCounts = make(map[string]*int, 0)
 }
 
-type DBService struct {
-	Counts map[string]int
-	Status string
+type IService interface {
+	AddOrder(product string) error
+	AddCart(cart string) error
 }
 
-func (db *DBService) Add(product string) bool {
-	if count, ok := db.Counts[product]; ok {
-		count++
-		return true
+type Service struct {
+}
+
+func (db *Service) AddCart(cart string) error {
+	if count, ok := cartCounts[cart]; ok {
+		*count++
+		return nil
 	}
-	db.Counts[product] = 1
-	return true
+	count := 1
+	cartCounts[cart] = &count
+	return nil
+}
+
+func (db *Service) AddOrder(order string) error {
+	if count, ok := orderCounts[order]; ok {
+		*count++
+		return nil
+	}
+	count := 1
+	orderCounts[order] = &count
+	return nil
 }

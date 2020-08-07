@@ -1,15 +1,15 @@
 package auth
 
-type IAuthService interface {
-	auth() bool
+import "fmt"
+
+type IService interface {
+	Auth(user string) error
 }
 
-type AuthService struct {
+type Service struct {
 }
 
-func (a *AuthService) auth(user string) bool {
-	return true
-}
-
-type OrderDB struct {
+func (a *Service) Auth(user string) error {
+	fmt.Printf("Auth for user [%s]\n", user)
+	return nil
 }
