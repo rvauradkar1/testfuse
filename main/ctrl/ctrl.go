@@ -8,7 +8,7 @@ import (
 )
 
 type OrderController struct {
-	CartSvc *cart.Service `_fuse:"CartSvc"`
+	CartSvc *cart.CartSvc `_fuse:"CartSvc"`
 	AuthSvc auth.IService `_fuse:"AuthSvc"`
 }
 

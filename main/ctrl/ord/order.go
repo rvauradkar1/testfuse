@@ -11,12 +11,12 @@ type IService interface {
 	SaveOrder(order string) error
 }
 
-type Service struct {
+type OrderSvc struct {
 	CacheSvc cache.IService `_fuse:"CacheSvc"`
 	DBSvc    db.IService    `_fuse:"DBSvc"`
 }
 
-func (o *Service) SaveOrder(order string) error {
+func (o *OrderSvc) SaveOrder(order string) error {
 	fmt.Println("Begin of AddOrder  on OrderSvc")
 	err := o.DBSvc.AddOrder(order)
 	if err != nil {

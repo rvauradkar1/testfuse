@@ -13,10 +13,10 @@ type IService interface {
 	AddCart(cart string) error
 }
 
-type Service struct {
+type DBSvc struct {
 }
 
-func (db *Service) AddCart(cart string) error {
+func (db *DBSvc) AddCart(cart string) error {
 	if count, ok := cartCounts[cart]; ok {
 		*count++
 		return nil
@@ -26,7 +26,7 @@ func (db *Service) AddCart(cart string) error {
 	return nil
 }
 
-func (db *Service) AddOrder(order string) error {
+func (db *DBSvc) AddOrder(order string) error {
 	if count, ok := orderCounts[order]; ok {
 		*count++
 		return nil

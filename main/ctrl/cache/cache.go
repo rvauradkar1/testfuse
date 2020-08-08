@@ -8,7 +8,7 @@ type IService interface {
 var cartCounts map[string]*int
 var orderCounts map[string]*int
 
-type Service struct {
+type CacheSvc struct {
 }
 
 func init() {
@@ -16,7 +16,7 @@ func init() {
 	orderCounts = make(map[string]*int, 0)
 }
 
-func (c *Service) AddCart(cart string) error {
+func (c *CacheSvc) AddCart(cart string) error {
 	if count, ok := cartCounts[cart]; ok {
 		*count++
 		return nil
@@ -26,7 +26,7 @@ func (c *Service) AddCart(cart string) error {
 	return nil
 }
 
-func (c *Service) AddOrder(order string) error {
+func (c *CacheSvc) AddOrder(order string) error {
 	if count, ok := orderCounts[order]; ok {
 		*count++
 		return nil

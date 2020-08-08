@@ -6,10 +6,10 @@ type IService interface {
 	Auth(user string) error
 }
 
-type Service struct {
+type AuthSvc struct {
 }
 
-func (a *Service) Auth(user string) error {
+func (a *AuthSvc) Auth(user string) error {
 	fmt.Printf("Auth for user [%s]\n", user)
 	return nil
 }

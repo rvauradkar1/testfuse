@@ -2,6 +2,9 @@ package main
 
 import (
 	"fmt"
+	"reflect"
+
+	"github.com/rvauradkar1/fuse/mock"
 
 	"github.com/rvauradkar1/testfuse/main/ctrl/ord"
 
@@ -19,14 +22,23 @@ import (
 )
 
 func main() {
+	o := ctrl.OrderController{}
+	t := reflect.TypeOf(o)
+	tf := t.Field(1).Type
+	fmt.Println(tf)
+	tf1 := reflect.TypeOf(&auth.AuthSvc{})
+	fmt.Println(tf1)
+	fmt.Println(tf1.AssignableTo(tf))
+	fmt.Println(tf1.Implements(tf))
+	fmt.Println()
 	fmt.Println("Hello testfuse")
 	cs := make([]fuse.Entry, 0)
 	cs = append(cs, fuse.Entry{Name: "OrdCtrl", Stateless: true, Instance: &ctrl.OrderController{}})
-	cs = append(cs, fuse.Entry{Name: "CartSvc", Stateless: true, Instance: &cart.Service{}})
-	cs = append(cs, fuse.Entry{Name: "AuthSvc", Stateless: true, Instance: &auth.Service{}})
-	cs = append(cs, fuse.Entry{Name: "CacheSvc", Stateless: true, Instance: &cache.Service{}})
-	cs = append(cs, fuse.Entry{Name: "DBSvc", Stateless: true, Instance: &db.Service{}})
-	cs = append(cs, fuse.Entry{Name: "OrderSvc", Stateless: true, Instance: &ord.Service{}})
+	cs = append(cs, fuse.Entry{Name: "CartSvc", Stateless: true, Instance: &cart.CartSvc{}})
+	cs = append(cs, fuse.Entry{Name: "AuthSvc", Stateless: true, Instance: &auth.AuthSvc{}})
+	cs = append(cs, fuse.Entry{Name: "CacheSvc", Stateless: true, Instance: &cache.CacheSvc{}})
+	cs = append(cs, fuse.Entry{Name: "DBSvc", Stateless: true, Instance: &db.DBSvc{}})
+	cs = append(cs, fuse.Entry{Name: "OrderSvc", Stateless: false, Instance: &ord.OrderSvc{}})
 
 	f := fuse.New()
 	setup.Find = f.Find
@@ -36,4 +48,22 @@ func main() {
 	ii := i.(*ctrl.OrderController)
 	err := ii.Order("raj", "order123")
 	fmt.Println("Return from 1 ", err)
+	genMocks()
+}
+
+func genMocks() {
+
+	m := mock.MockGen{}
+	comps := make([]mock.Component, 0)
+	path := "/Users/rvauradkar/go_code/src/github.com/rvauradkar1/testfuse/main"
+	fmt.Println("path ====== " + path)
+	comps = append(comps, mock.Component{PtrToComp: &ctrl.OrderController{}, Basepath: path + "/ctrl"})
+	comps = append(comps, mock.Component{PtrToComp: &cart.CartSvc{}, Basepath: path + "/ctrl/cart"})
+	comps = append(comps, mock.Component{PtrToComp: &auth.AuthSvc{}, Basepath: path + "/ctrl/auth"})
+	m.Comps = comps
+	m.Gen()
+
+	//t1 := typeInfo{}
+	//fmt.Println(t1)
+
 }
