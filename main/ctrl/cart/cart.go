@@ -6,7 +6,7 @@ import (
 	"github.com/rvauradkar1/testfuse/main/ctrl/cache"
 	"github.com/rvauradkar1/testfuse/main/ctrl/ord"
 	"github.com/rvauradkar1/testfuse/main/ctrl/ord/db"
-	"github.com/rvauradkar1/testfuse/main/setup"
+	"github.com/rvauradkar1/testfuse/main/find"
 )
 
 type ICartService interface {
@@ -16,11 +16,12 @@ type ICartService interface {
 type CartSvc struct {
 	CacheSvc cache.IService `_fuse:"CacheSvc"`
 	DBSvc    db.IService    `_fuse:"DBSvc"`
+	_GEN_    interface{}    `_fuse_no:"OrderSvc"`
 }
 
 func (c *CartSvc) Add(cart string) error {
 	fmt.Println("Calling find on OrderSvc")
-	o := setup.Find("OrderSvc")
+	o := find.Find("OrderSvc")
 	ordSvc := o.(ord.IService)
 	err := ordSvc.SaveOrder(cart)
 	if err != nil {
@@ -30,6 +31,6 @@ func (c *CartSvc) Add(cart string) error {
 	if err != nil {
 		return err
 	}
-	c.CacheSvc.AddCart(cart)
+	c.CacheSvc.AddCrt(cart)
 	return nil
 }

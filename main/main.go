@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"reflect"
+	"runtime"
 
 	"github.com/rvauradkar1/fuse/mock"
 
@@ -16,21 +16,13 @@ import (
 
 	"github.com/rvauradkar1/testfuse/main/ctrl"
 	"github.com/rvauradkar1/testfuse/main/ctrl/cart"
-	"github.com/rvauradkar1/testfuse/main/setup"
+	"github.com/rvauradkar1/testfuse/main/find"
 
 	"github.com/rvauradkar1/fuse/fuse"
 )
 
 func main() {
-	o := ctrl.OrderController{}
-	t := reflect.TypeOf(o)
-	tf := t.Field(1).Type
-	fmt.Println(tf)
-	tf1 := reflect.TypeOf(&auth.AuthSvc{})
-	fmt.Println(tf1)
-	fmt.Println(tf1.AssignableTo(tf))
-	fmt.Println(tf1.Implements(tf))
-	fmt.Println()
+	call(100)
 	fmt.Println("Hello testfuse")
 	cs := make([]fuse.Entry, 0)
 	cs = append(cs, fuse.Entry{Name: "OrdCtrl", Stateless: true, Instance: &ctrl.OrderController{}})
@@ -41,7 +33,7 @@ func main() {
 	cs = append(cs, fuse.Entry{Name: "OrderSvc", Stateless: false, Instance: &ord.OrderSvc{}})
 
 	f := fuse.New()
-	setup.Find = f.Find
+	find.Find = f.Find
 	errors := f.Register(cs)
 	fmt.Println(errors)
 	i := f.Find("OrdCtrl")
@@ -49,6 +41,11 @@ func main() {
 	err := ii.Order("raj", "order123")
 	fmt.Println("Return from 1 ", err)
 	genMocks()
+}
+
+func call(i int) {
+	fmt.Println(runtime.Caller(1))
+
 }
 
 func genMocks() {
@@ -60,6 +57,9 @@ func genMocks() {
 	comps = append(comps, mock.Component{PtrToComp: &ctrl.OrderController{}, Basepath: path + "/ctrl"})
 	comps = append(comps, mock.Component{PtrToComp: &cart.CartSvc{}, Basepath: path + "/ctrl/cart"})
 	comps = append(comps, mock.Component{PtrToComp: &auth.AuthSvc{}, Basepath: path + "/ctrl/auth"})
+	comps = append(comps, mock.Component{PtrToComp: &cache.CacheSvc{}, Basepath: path + "/ctrl/cache"})
+	comps = append(comps, mock.Component{PtrToComp: &db.DBSvc{}, Basepath: path + "/ctrl/ord/db"})
+	comps = append(comps, mock.Component{PtrToComp: &ord.OrderSvc{}, Basepath: path + "/ctrl/ord"})
 	m.Comps = comps
 	m.Gen()
 

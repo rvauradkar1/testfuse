@@ -22,6 +22,6 @@ func (o *OrderSvc) SaveOrder(order string) error {
 	if err != nil {
 		return err
 	}
-	o.CacheSvc.AddOrder(order)
+	o.CacheSvc.AddOrd(order)
 	return nil
 }

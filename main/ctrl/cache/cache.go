@@ -1,8 +1,8 @@
 package cache
 
 type IService interface {
-	AddOrder(product string) error
-	AddCart(cart string) error
+	AddOrd(product string) error
+	AddCrt(cart string) error
 }
 
 var cartCounts map[string]*int
@@ -16,7 +16,7 @@ func init() {
 	orderCounts = make(map[string]*int, 0)
 }
 
-func (c *CacheSvc) AddCart(cart string) error {
+func (c *CacheSvc) AddCrt(cart string) error {
 	if count, ok := cartCounts[cart]; ok {
 		*count++
 		return nil
@@ -26,7 +26,7 @@ func (c *CacheSvc) AddCart(cart string) error {
 	return nil
 }
 
-func (c *CacheSvc) AddOrder(order string) error {
+func (c *CacheSvc) AddOrd(order string) error {
 	if count, ok := orderCounts[order]; ok {
 		*count++
 		return nil
