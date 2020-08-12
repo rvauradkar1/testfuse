@@ -49,7 +49,6 @@ func call(i int) {
 }
 
 func genMocks() {
-
 	m := mock.MockGen{}
 	comps := make([]mock.Component, 0)
 	path := "/Users/rvauradkar/go_code/src/github.com/rvauradkar1/testfuse/main"
@@ -62,8 +61,4 @@ func genMocks() {
 	comps = append(comps, mock.Component{PtrToComp: &ord.OrderSvc{}, Basepath: path + "/ctrl/ord"})
 	m.Comps = comps
 	m.Gen()
-
-	//t1 := typeInfo{}
-	//fmt.Println(t1)
-
 }

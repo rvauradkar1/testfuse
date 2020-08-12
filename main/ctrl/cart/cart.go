@@ -16,7 +16,7 @@ type ICartService interface {
 type CartSvc struct {
 	CacheSvc cache.IService `_fuse:"CacheSvc"`
 	DBSvc    db.IService    `_fuse:"DBSvc"`
-	_GEN_    interface{}    `_fuse_no:"OrderSvc"`
+	DEPS_    interface{}    `_deps:"OrderSvc"`
 }
 
 func (c *CartSvc) Add(cart string) error {
