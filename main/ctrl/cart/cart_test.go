@@ -17,23 +17,26 @@ var mockDB db.IService = &MockDBSvc{}
 
 func init() {
 	fmt.Println("pppppp")
-	fuse := fuse.New()
-	fuse.RegisterMock("OrderSvc", &MockOrderSvc{})
-	find.Find = fuse.Find
+	f := fuse.New()
+	f.RegisterMock("OrderSvc", &MockOrderSvc{})
+	find.Find = f.Find
 }
 
 func Test_Add(t *testing.T) {
 	c := CartSvc{CacheSvc: mockCache, DBSvc: mockDB}
-	SaveOrderFunc = func(cart string) error {
+	MockSaveOrder = func(cart string) error {
 		return nil
 	}
-	AddCartFunc = func(cart string) error {
+	MockAddCart = func(cart string) error {
 		return nil
 	}
-	AddCrtFunc = func(cart string) error {
+	MockAddCrt = func(cart string) error {
 		return nil
 	}
 
-	c.Add("new cart")
+	err := c.Add("new cart")
+	if err != nil {
+		t.Errorf("there should have been no error but got %s\n", err)
+	}
 	fmt.Println(c)
 }

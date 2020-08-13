@@ -1,4 +1,5 @@
 
+
 package ord
 import (
 "github.com/rvauradkar1/testfuse/main/ctrl/cache"
@@ -6,48 +7,51 @@ import (
 
 )
 
+// Begin of mock for CacheSvc and its methods
 type MockCacheSvc struct{
 	
 }
 
 
 
-
 type AddCrt func(s1 string) (error)
-var AddCrtFunc AddCrt
+var MockAddCrt AddCrt
 func (p *MockCacheSvc) AddCrt(s1 string) (error) {
-	return AddCrtFunc( s1)
+	return MockAddCrt( s1)
 }
 
 
 type AddOrd func(s1 string) (error)
-var AddOrdFunc AddOrd
+var MockAddOrd AddOrd
 func (p *MockCacheSvc) AddOrd(s1 string) (error) {
-	return AddOrdFunc( s1)
+	return MockAddOrd( s1)
 }
 
+// End of mock for CacheSvc and its methods
 
+// Begin of mock for DBSvc and its methods
 type MockDBSvc struct{
 	
 }
 
 
 
-
 type AddCart func(s1 string) (error)
-var AddCartFunc AddCart
+var MockAddCart AddCart
 func (p *MockDBSvc) AddCart(s1 string) (error) {
-	return AddCartFunc( s1)
+	return MockAddCart( s1)
 }
 
 
 type AddOrder func(s1 string) (error)
-var AddOrderFunc AddOrder
+var MockAddOrder AddOrder
 func (p *MockDBSvc) AddOrder(s1 string) (error) {
-	return AddOrderFunc( s1)
+	return MockAddOrder( s1)
 }
 
+// End of mock for DBSvc and its methods
 
+// Begin of mock for OrderSvc and its methods
 type MockOrderSvc struct{
 	CacheSvc cache.IService
 DBSvc db.IService
@@ -56,11 +60,11 @@ DBSvc db.IService
 
 
 
-
 type SaveOrder func(s1 string) (error)
-var SaveOrderFunc SaveOrder
+var MockSaveOrder SaveOrder
 func (p *MockOrderSvc) SaveOrder(s1 string) (error) {
-	return SaveOrderFunc( s1)
+	return MockSaveOrder( s1)
 }
 
+// End of mock for OrderSvc and its methods
 

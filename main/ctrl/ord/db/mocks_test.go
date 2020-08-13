@@ -1,27 +1,29 @@
 
+
 package db
 import (
 
 )
 
+// Begin of mock for DBSvc and its methods
 type MockDBSvc struct{
 	
 }
 
 
 
-
 type AddCart func(s1 string) (error)
-var AddCartFunc AddCart
+var MockAddCart AddCart
 func (p *MockDBSvc) AddCart(s1 string) (error) {
-	return AddCartFunc( s1)
+	return MockAddCart( s1)
 }
 
 
 type AddOrder func(s1 string) (error)
-var AddOrderFunc AddOrder
+var MockAddOrder AddOrder
 func (p *MockDBSvc) AddOrder(s1 string) (error) {
-	return AddOrderFunc( s1)
+	return MockAddOrder( s1)
 }
 
+// End of mock for DBSvc and its methods
 
