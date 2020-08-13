@@ -53,12 +53,12 @@ func genMocks() {
 	comps := make([]mock.Component, 0)
 	path := "/Users/rvauradkar/go_code/src/github.com/rvauradkar1/testfuse/main"
 	fmt.Println("path ====== " + path)
-	comps = append(comps, mock.Component{PtrToComp: &ctrl.OrderController{}, Basepath: path + "/ctrl"})
-	comps = append(comps, mock.Component{PtrToComp: &cart.CartSvc{}, Basepath: path + "/ctrl/cart"})
-	comps = append(comps, mock.Component{PtrToComp: &auth.AuthSvc{}, Basepath: path + "/ctrl/auth"})
-	comps = append(comps, mock.Component{PtrToComp: &cache.CacheSvc{}, Basepath: path + "/ctrl/cache"})
-	comps = append(comps, mock.Component{PtrToComp: &db.DBSvc{}, Basepath: path + "/ctrl/ord/db"})
-	comps = append(comps, mock.Component{PtrToComp: &ord.OrderSvc{}, Basepath: path + "/ctrl/ord"})
+	comps = append(comps, mock.Component{PtrToComp: &ctrl.OrderController{}, Basepath: path + "/ctrl", Name: "OrdCtrl"})
+	comps = append(comps, mock.Component{PtrToComp: &cart.CartSvc{}, Basepath: path + "/ctrl/cart", Name: "CartSvc"})
+	comps = append(comps, mock.Component{PtrToComp: &auth.AuthSvc{}, Basepath: path + "/ctrl/auth", Name: "AuthSvc"})
+	comps = append(comps, mock.Component{PtrToComp: &cache.CacheSvc{}, Basepath: path + "/ctrl/cache", Name: "CacheSvc"})
+	comps = append(comps, mock.Component{PtrToComp: &db.DBSvc{}, Basepath: path + "/ctrl/ord/db", Name: "DBSvc"})
+	comps = append(comps, mock.Component{PtrToComp: &ord.OrderSvc{}, Basepath: path + "/ctrl/ord", Name: "OrderSvc"})
 	m.Comps = comps
 	m.Gen()
 }

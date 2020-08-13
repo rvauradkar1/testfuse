@@ -1,57 +1,66 @@
-package ord
 
+package ord
 import (
-	"github.com/rvauradkar1/testfuse/main/ctrl/cache"
-	"github.com/rvauradkar1/testfuse/main/ctrl/ord/db"
+"github.com/rvauradkar1/testfuse/main/ctrl/cache"
+"github.com/rvauradkar1/testfuse/main/ctrl/ord/db"
+
 )
 
-type MockCacheSvc struct {
+type MockCacheSvc struct{
+	
 }
 
-type AddCrt func(s1 string) error
 
+
+
+type AddCrt func(s1 string) (error)
 var AddCrtFunc AddCrt
-
-func (p *MockCacheSvc) AddCrt(s1 string) error {
-	return AddCrtFunc(s1)
+func (p *MockCacheSvc) AddCrt(s1 string) (error) {
+	return AddCrtFunc( s1)
 }
 
-type AddOrd func(s1 string) error
 
+type AddOrd func(s1 string) (error)
 var AddOrdFunc AddOrd
-
-func (p *MockCacheSvc) AddOrd(s1 string) error {
-	return AddOrdFunc(s1)
+func (p *MockCacheSvc) AddOrd(s1 string) (error) {
+	return AddOrdFunc( s1)
 }
 
-type MockDBSvc struct {
+
+type MockDBSvc struct{
+	
 }
 
-type AddCart func(s1 string) error
 
+
+
+type AddCart func(s1 string) (error)
 var AddCartFunc AddCart
-
-func (p *MockDBSvc) AddCart(s1 string) error {
-	return AddCartFunc(s1)
+func (p *MockDBSvc) AddCart(s1 string) (error) {
+	return AddCartFunc( s1)
 }
 
-type AddOrder func(s1 string) error
 
+type AddOrder func(s1 string) (error)
 var AddOrderFunc AddOrder
-
-func (p *MockDBSvc) AddOrder(s1 string) error {
-	return AddOrderFunc(s1)
+func (p *MockDBSvc) AddOrder(s1 string) (error) {
+	return AddOrderFunc( s1)
 }
 
-type MockOrderSvc struct {
+
+type MockOrderSvc struct{
 	CacheSvc cache.IService
-	DBSvc    db.IService
+DBSvc db.IService
+
 }
 
-type SaveOrder func(s1 string) error
 
+
+
+type SaveOrder func(s1 string) (error)
 var SaveOrderFunc SaveOrder
-
-func (p *MockOrderSvc) SaveOrder(s1 string) error {
-	return SaveOrderFunc(s1)
+func (p *MockOrderSvc) SaveOrder(s1 string) (error) {
+	return SaveOrderFunc( s1)
 }
+
+

@@ -54,20 +54,6 @@ func (p *MockDBSvc) AddOrder(s1 string) error {
 	return AddOrderFunc(s1)
 }
 
-type MockCartSvc struct {
-	CacheSvc cache.IService
-	DBSvc    db.IService
-	_GEN_    interface{}
-}
-
-type Add func(s1 string) error
-
-var AddFunc Add
-
-func (p *MockCartSvc) Add(s1 string) error {
-	return AddFunc(s1)
-}
-
 type MockOrderSvc struct {
 	CacheSvc cache.IService
 	DBSvc    db.IService
@@ -79,4 +65,18 @@ var SaveOrderFunc SaveOrder
 
 func (p *MockOrderSvc) SaveOrder(s1 string) error {
 	return SaveOrderFunc(s1)
+}
+
+type MockCartSvc struct {
+	CacheSvc cache.IService
+	DBSvc    db.IService
+	DEPS_    interface{}
+}
+
+type Add func(s1 string) error
+
+var AddFunc Add
+
+func (p *MockCartSvc) Add(s1 string) error {
+	return AddFunc(s1)
 }
