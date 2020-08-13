@@ -5,17 +5,6 @@ import (
 	"github.com/rvauradkar1/testfuse/main/ctrl/ord/db"
 )
 
-type MockAuthSvc struct {
-}
-
-type Auth func(s1 string) error
-
-var AuthFunc Auth
-
-func (p *MockAuthSvc) Auth(s1 string) error {
-	return AuthFunc(s1)
-}
-
 type MockCacheSvc struct {
 }
 
