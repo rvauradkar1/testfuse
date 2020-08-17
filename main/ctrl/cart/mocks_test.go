@@ -1,88 +1,83 @@
-
-
 package cart
-import (
-"github.com/rvauradkar1/testfuse/main/ctrl/cache"
-"github.com/rvauradkar1/testfuse/main/ctrl/ord/db"
 
+import (
+	"github.com/rvauradkar1/testfuse/main/ctrl/cache"
+	"github.com/rvauradkar1/testfuse/main/ctrl/ord/db"
 )
 
 // Begin of mock for CacheSvc and its methods
-type MockCacheSvc struct{
-	
+type mockCacheSvc struct {
+	AddCrtFunc func(s1 string) error
+	AddOrdFunc func(s1 string) error
 }
 
+var MockCacheSvc mockCacheSvc
 
-
-type AddCrt func(s1 string) (error)
-var MockAddCrt AddCrt
-func (p *MockCacheSvc) AddCrt(s1 string) (error) {
-	return MockAddCrt( s1)
+func (p *mockCacheSvc) AddCrt(s1 string) error {
+	return p.AddCrtFunc(s1)
 }
 
+//type AddOrd func(s1 string) error
 
-type AddOrd func(s1 string) (error)
-var MockAddOrd AddOrd
-func (p *MockCacheSvc) AddOrd(s1 string) (error) {
-	return MockAddOrd( s1)
+//var MockAddOrd AddOrd
+
+func (p *mockCacheSvc) AddOrd(s1 string) error {
+	return p.AddOrdFunc(s1)
 }
 
 // End of mock for CacheSvc and its methods
 
 // Begin of mock for DBSvc and its methods
-type MockDBSvc struct{
-	
+type MockDBSvc struct {
 }
 
+type AddCart func(s1 string) error
 
-
-type AddCart func(s1 string) (error)
 var MockAddCart AddCart
-func (p *MockDBSvc) AddCart(s1 string) (error) {
-	return MockAddCart( s1)
+
+func (p *MockDBSvc) AddCart(s1 string) error {
+	return MockAddCart(s1)
 }
 
+type AddOrder func(s1 string) error
 
-type AddOrder func(s1 string) (error)
 var MockAddOrder AddOrder
-func (p *MockDBSvc) AddOrder(s1 string) (error) {
-	return MockAddOrder( s1)
+
+func (p *MockDBSvc) AddOrder(s1 string) error {
+	return MockAddOrder(s1)
 }
 
 // End of mock for DBSvc and its methods
 
 // Begin of mock for OrderSvc and its methods
-type MockOrderSvc struct{
+type MockOrderSvc struct {
 	CacheSvc cache.IService
-DBSvc db.IService
-
+	DBSvc    db.IService
 }
 
+type SaveOrder func(s1 string) error
 
-
-type SaveOrder func(s1 string) (error)
 var MockSaveOrder SaveOrder
-func (p *MockOrderSvc) SaveOrder(s1 string) (error) {
-	return MockSaveOrder( s1)
+
+func (p *MockOrderSvc) SaveOrder(s1 string) error {
+	return MockSaveOrder(s1)
 }
 
 // End of mock for OrderSvc and its methods
 
 // Begin of mock for CartSvc and its methods
-type MockCartSvc struct{
+type MockCartSvc struct {
 	CacheSvc cache.IService
-DBSvc db.IService
-DEPS_ interface {}
-
+	DBSvc    db.IService
+	DEPS_    interface{}
 }
 
+type Add func(s1 string) error
 
-
-type Add func(s1 string) (error)
 var MockAdd Add
-func (p *MockCartSvc) Add(s1 string) (error) {
-	return MockAdd( s1)
+
+func (p *MockCartSvc) Add(s1 string) error {
+	return MockAdd(s1)
 }
 
 // End of mock for CartSvc and its methods
-
