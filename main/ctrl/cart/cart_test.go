@@ -4,14 +4,14 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/rvauradkar1/testfuse/main/find"
+	"github.com/rvauradkar1/testfuse/main/ctrl/cache"
 
 	"github.com/rvauradkar1/fuse/fuse"
-
 	"github.com/rvauradkar1/testfuse/main/ctrl/ord/db"
+	"github.com/rvauradkar1/testfuse/main/find"
 )
 
-//var mockCache cache.IService = &ockCacheSvc{}
+var mockCache cache.IService = &MockCacheSvc{}
 var mockDB db.IService = &MockDBSvc{}
 
 func init() {
@@ -22,14 +22,14 @@ func init() {
 }
 
 func Test_Add(t *testing.T) {
-	c := CartSvc{CacheSvc: &MockCacheSvc, DBSvc: mockDB}
+	c := CartSvc{CacheSvc: mockCache, DBSvc: mockDB}
 	MockSaveOrder = func(cart string) error {
 		return nil
 	}
-	MockAddCart = func(cart string) error {
+	MockAddCrt = func(cart string) error {
 		return nil
 	}
-	MockCacheSvc.AddCrtFunc = func(cart string) error {
+	MockAddCart = func(cart string) error {
 		return nil
 	}
 
