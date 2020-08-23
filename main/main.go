@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 
 	"github.com/rvauradkar1/fuse/mock"
@@ -22,8 +23,30 @@ import (
 )
 
 func main() {
+
+	c := &ctrl.OrderController{}
+	t := reflect.TypeOf(c)
+	e := t.Elem()
+	fmt.Println("pppp = ", e.PkgPath())
+
+	c1 := &db.DBSvc{}
+	t = reflect.TypeOf(c1)
+	e = t.Elem()
+	fmt.Println("pppp = ", e.PkgPath())
+
 	call(100)
 	fmt.Println("Hello testfuse")
+	f, errors := funcName()
+	errors = f.Wire()
+	fmt.Println(errors)
+	comp := f.Find("OrdCtrl")
+	ctrl := comp.(*ctrl.OrderController)
+	err := ctrl.Order("raj", "order123")
+	fmt.Println("Return from 1 ", err)
+	genMocks()
+}
+
+func funcName() (fuse.Fuse, []error) {
 	cs := make([]fuse.Entry, 0)
 	cs = append(cs, fuse.Entry{Name: "OrdCtrl", State: true, Instance: &ctrl.OrderController{}})
 	cs = append(cs, fuse.Entry{Name: "CartSvc", State: true, Instance: &cart.CartSvc{}})
@@ -35,13 +58,7 @@ func main() {
 	f := fuse.New()
 	find.Find = f.Find
 	errors := f.Register(cs)
-	errors = f.Wire()
-	fmt.Println(errors)
-	comp := f.Find("OrdCtrl")
-	ctrl := comp.(*ctrl.OrderController)
-	err := ctrl.Order("raj", "order123")
-	fmt.Println("Return from 1 ", err)
-	genMocks()
+	return f, errors
 }
 
 func call(i int) {
