@@ -3,38 +3,39 @@ package cfg
 import (
 	"fmt"
 
-	"github.com/rvauradkar1/fuse/mock"
-
 	"github.com/rvauradkar1/fuse/fuse"
-	"github.com/rvauradkar1/testfuse/main/ctrl"
-	"github.com/rvauradkar1/testfuse/main/ctrl/auth"
-	"github.com/rvauradkar1/testfuse/main/ctrl/cache"
-	"github.com/rvauradkar1/testfuse/main/ctrl/cart"
-	"github.com/rvauradkar1/testfuse/main/ctrl/ord"
-	"github.com/rvauradkar1/testfuse/main/ctrl/ord/db"
-	"github.com/rvauradkar1/testfuse/main/find"
 )
 
-func Fuse() {
-	fmt.Println("Hello testfuse")
-	cs := make([]fuse.Entry, 0)
-	cs = append(cs, fuse.Entry{Name: "OrdCtrl", State: false, Instance: &ctrl.OrderController{}})
-	cs = append(cs, fuse.Entry{Name: "CartSvc", State: false, Instance: &cart.CartSvc{}})
-	cs = append(cs, fuse.Entry{Name: "AuthSvc", State: false, Instance: &auth.AuthSvc{}})
-	cs = append(cs, fuse.Entry{Name: "CacheSvc", State: false, Instance: &cache.CacheSvc{}})
-	cs = append(cs, fuse.Entry{Name: "DBSvc", State: false, Instance: &db.DBSvc{}})
-	cs = append(cs, fuse.Entry{Name: "OrderSvc", State: true, Instance: &ord.OrderSvc{}})
+var Find func(name string) interface{}
 
-	f := fuse.New()
-	find.Find = f.Find
-	errors := f.Register(cs)
-	fmt.Println(errors)
-	comp := f.Find("OrdCtrl")
-	ctrl := comp.(*ctrl.OrderController)
-	err := ctrl.Order("raj", "order123")
-	fmt.Println("Return from 1 ", err)
+/*
+func Entries() []fuse.Entry {
+	fmt.Println("Hello testfuse")
+	entries := make([]fuse.Entry, 0)
+	entries = append(entries, fuse.Entry{Name: "OrdCtrl", State: false, Instance: &ctrl.OrderController{}})
+	entries = append(entries, fuse.Entry{Name: "CartSvc", State: false, Instance: &cart.CartSvc{}})
+	entries = append(entries, fuse.Entry{Name: "AuthSvc", State: false, Instance: &auth.AuthSvc{}})
+	entries = append(entries, fuse.Entry{Name: "CacheSvc", State: false, Instance: &cache.CacheSvc{}})
+	entries = append(entries, fuse.Entry{Name: "DBSvc", State: false, Instance: &db.DBSvc{}})
+	entries = append(entries, fuse.Entry{Name: "OrderSvc", State: true, Instance: &ord.OrderSvc{}})
+
+	return entries
 }
 
+*/
+
+func Fuse(entries []fuse.Entry) []error {
+	f := fuse.New()
+	//find.Find = f.Find
+	Find = f.Find
+	errors := f.Register(entries)
+	errors = f.Wire()
+	fmt.Println(errors)
+
+	return errors
+}
+
+/*
 func Mock() {
 	m := mock.MockGen{}
 	comps := make([]mock.Component, 0)
@@ -49,3 +50,5 @@ func Mock() {
 	m.Comps = comps
 	m.Generate()
 }
+
+*/

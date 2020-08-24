@@ -4,32 +4,39 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/rvauradkar1/testfuse/main/cfg"
+
 	"github.com/rvauradkar1/testfuse/main/ctrl/cache"
 
-	"github.com/rvauradkar1/fuse/fuse"
 	"github.com/rvauradkar1/testfuse/main/ctrl/ord/db"
-	"github.com/rvauradkar1/testfuse/main/find"
 )
 
 var mockCache cache.IService = &MockCacheSvc{}
 var mockDB db.IService = &MockDBSvc{}
 
 func init() {
-	fmt.Println("pppppp")
-	f := fuse.New()
-	f.RegisterMock("OrderSvc", &MockOrderSvc{})
-	find.Find = f.Find
+	fmt.Println("Calling init...")
+	cfg.Find = func(name string) interface{} {
+		switch name {
+		case "OrderSvc":
+			return &MockOrderSvc{}
+		}
+		return nil
+	}
 }
 
 func Test_Add(t *testing.T) {
 	c := CartSvc{CacheSvc: mockCache, DBSvc: mockDB}
 	MockSaveOrder = func(cart string) error {
+		fmt.Println("Inside MockSaveOrder... ")
 		return nil
 	}
 	MockAddCrt = func(cart string) error {
+		fmt.Println("Inside MockAddCrt... ")
 		return nil
 	}
 	MockAddCart = func(cart string) error {
+		fmt.Println("Inside MockAddCart... ")
 		return nil
 	}
 

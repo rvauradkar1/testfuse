@@ -16,10 +16,12 @@ import (
 )
 
 func TestMain(m *testing.M) {
-	f, errors := funcName()
-	fmt.Println(f)
-	fmt.Println(errors)
+	//f, errors := funcName()
+	//fmt.Println(f)
+	//fmt.Println(errors)
+	fmt.Println("Begin test main....")
 	os.Exit(m.Run())
+	fmt.Println("End test main....")
 }
 
 func Test_s(t *testing.T) {
@@ -38,4 +40,14 @@ func Test_register(t *testing.T) {
 	errors := m.Register(entries)
 	fmt.Println("errors = ", errors)
 	m.Generate2()
+}
+
+func Test_reg(t *testing.T) {
+	m := mock.New("main")
+	entries := Entries()
+	errors := m.Register(entries)
+	fmt.Println(errors)
+
+	m.Generate2()
+
 }
