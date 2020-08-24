@@ -2,39 +2,20 @@ package main
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 
-	"github.com/rvauradkar1/fuse/mock"
-
-	"github.com/rvauradkar1/testfuse/main/ctrl/ord"
-
-	"github.com/rvauradkar1/testfuse/main/ctrl/ord/db"
-
-	"github.com/rvauradkar1/testfuse/main/ctrl/cache"
-
-	"github.com/rvauradkar1/testfuse/main/ctrl/auth"
-
 	"github.com/rvauradkar1/testfuse/main/ctrl"
+	"github.com/rvauradkar1/testfuse/main/ctrl/auth"
+	"github.com/rvauradkar1/testfuse/main/ctrl/cache"
 	"github.com/rvauradkar1/testfuse/main/ctrl/cart"
+	"github.com/rvauradkar1/testfuse/main/ctrl/ord"
+	"github.com/rvauradkar1/testfuse/main/ctrl/ord/db"
 	"github.com/rvauradkar1/testfuse/main/find"
 
 	"github.com/rvauradkar1/fuse/fuse"
 )
 
 func main() {
-
-	c := &ctrl.OrderController{}
-	t := reflect.TypeOf(c)
-	e := t.Elem()
-	fmt.Println("pppp = ", e.PkgPath())
-
-	c1 := &db.DBSvc{}
-	t = reflect.TypeOf(c1)
-	e = t.Elem()
-	fmt.Println("pppp = ", e.PkgPath())
-
-	call(100)
 	fmt.Println("Hello testfuse")
 	f, errors := funcName()
 	errors = f.Wire()
@@ -43,17 +24,17 @@ func main() {
 	ctrl := comp.(*ctrl.OrderController)
 	err := ctrl.Order("raj", "order123")
 	fmt.Println("Return from 1 ", err)
-	genMocks()
+	//genMocks()
 }
 
 func funcName() (fuse.Fuse, []error) {
 	cs := make([]fuse.Entry, 0)
-	cs = append(cs, fuse.Entry{Name: "OrdCtrl", State: true, Instance: &ctrl.OrderController{}})
-	cs = append(cs, fuse.Entry{Name: "CartSvc", State: true, Instance: &cart.CartSvc{}})
-	cs = append(cs, fuse.Entry{Name: "AuthSvc", State: true, Instance: &auth.AuthSvc{}})
-	cs = append(cs, fuse.Entry{Name: "CacheSvc", State: true, Instance: &cache.CacheSvc{}})
-	cs = append(cs, fuse.Entry{Name: "DBSvc", State: true, Instance: &db.DBSvc{}})
-	cs = append(cs, fuse.Entry{Name: "OrderSvc", State: false, Instance: &ord.OrderSvc{}})
+	cs = append(cs, fuse.Entry{Name: "OrdCtrl", State: false, Instance: &ctrl.OrderController{}})
+	cs = append(cs, fuse.Entry{Name: "CartSvc", State: false, Instance: &cart.CartSvc{}})
+	cs = append(cs, fuse.Entry{Name: "AuthSvc", State: false, Instance: &auth.AuthSvc{}})
+	cs = append(cs, fuse.Entry{Name: "CacheSvc", State: false, Instance: &cache.CacheSvc{}})
+	cs = append(cs, fuse.Entry{Name: "DBSvc", State: false, Instance: &db.DBSvc{}})
+	cs = append(cs, fuse.Entry{Name: "OrderSvc", State: true, Instance: &ord.OrderSvc{}})
 
 	f := fuse.New()
 	find.Find = f.Find
@@ -66,6 +47,7 @@ func call(i int) {
 
 }
 
+/*
 func genMocks() {
 	m := mock.MockGen{}
 	comps := make([]mock.Component, 0)
@@ -78,5 +60,6 @@ func genMocks() {
 	comps = append(comps, mock.Component{Instance: &db.DBSvc{}, Basepath: path + "/ctrl/ord/db", Name: "DBSvc"})
 	comps = append(comps, mock.Component{Instance: &ord.OrderSvc{}, Basepath: path + "/ctrl/ord", Name: "OrderSvc"})
 	m.Comps = comps
-	m.Gen()
+	m.Generate()
 }
+*/
