@@ -19,7 +19,7 @@ A graph of the components is provided below.
 
 Steps to follow:
 
-1. Declare components and configure dependencies
+1. [Declare components and configure dependencies]()
 2. Create a slice of component entries
 3. Create a config package to avoid cyclic dependencies
 4. Register and fuse the components (Dependency Injection pattern)
@@ -40,6 +40,25 @@ type OrderController struct {
 	AuthSvc auth.IService `_fuse:"AuthSvc"`
 }
 ```
+### Create a config package to avoid cyclic dependencies
+
+**Note:** Config package is needed for several reasons:
+
+1. Application packages cannot refer to 'main'.
+2. Go does not allow cyclical references.
+3. Application packges do not need to import 'fuse', they will import 'cfg' and
+use just the 'find' method. Eases refactoring if projects want to discontinue usage of 'fuse'.
+
+
+Following diagrams shows a high-level dependency:
+1. Application package 'main' depends on 'cfg' and 'fuse'. 'main' provides 'cfg' with the list of component entries.
+2. 'cfg' uses 'fuse', register and fuses the components together. The 'find' method
+from the 'fuse' package is assigned to the 'find' method from the 'cfg' package. Other packages use this method
+without importing 'fuse'
+3. 'other packages' are all other application packages. They depend on 'cfg' and use only the 'find' method.
+
+<img src="cfg.png" alt="Config Graph" title="Config Graph" class="absent" />
+
 
 ### Create a slice of component entries
 
@@ -89,24 +108,6 @@ errors := cfg.Fuse(entries)
 ```
 
 
-### Create a config package to avoid cyclic dependencies
-
-**Note:** Config package is needed for several reasons:
-
-1. Application packages cannot refer to 'main'.
-2. Go does not allow cyclical references.
-3. Application packges do not need to import 'fuse', they will import 'cfg' and
-use just the 'find' method. Eases refactoring if projects want to discontinue usage of 'fuse'.
-
-
-Following diagrams shows a high-level dependency:
-1. Application package 'main' depends on 'cfg' and 'fuse'. 'main' provides 'cfg' with the list of component entries.
-2. 'cfg' uses 'fuse', register and fuses the components together. The 'find' method
-from the 'fuse' package is assigned to the 'find' method from the 'cfg' package. Other packages use this method
-without importing 'fuse'
-3. 'other packages' are all other application packages. They depend on 'cfg' and use only the 'find' method.
-
-<img src="cfg.png" alt="Config Graph" title="Config Graph" class="absent" />
 
 ### Register and fuse the components (Dependency Injection pattern)
 
