@@ -39,7 +39,6 @@ func Test_Add(t *testing.T) {
 		fmt.Println("Inside MockAddCart... ")
 		return nil
 	}
-
 	err := c.Add("new cart")
 	if err != nil {
 		t.Errorf("there should have been no error but got %s\n", err)

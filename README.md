@@ -17,9 +17,24 @@ A graph of the components is provided below.
 
 ## Usage of package fuse
 
+**API for fuse:**
+
+```
+// Fuse is used by clients to configure dependency injection (DI)
+type Fuse interface {
+	// Register a slice of components
+	Register(entries []Entry) []error
+	// Wire injects dependencies into components.
+	Wire() []error
+	// Find is needed only for stateful components. Can also be used for stateless in case dependencies are not defined
+	// at instance level
+	Find(name string) interface{}
+}
+```
+
 Steps to follow:
 
-1. [Declare components and configure dependencies]()
+1. Declare components and configure dependencies
 2. Create a slice of component entries
 3. Create a config package to avoid cyclic dependencies
 4. Register and fuse the components (Dependency Injection pattern)
@@ -65,7 +80,8 @@ without importing 'fuse'
 The component slice is created in the application 'main' package. Helps in:
 1. Isolating dependencies on the 'fuse' package.
 2. One place to define the graph(s).
-3. Aid mock generation for unit-testing.
+3. Multiple slices can be creatd in case of different component graphs.
+4. 'mock' package uses these slices to create mock for unit-testing.
 
 **Example:**
 
@@ -99,15 +115,51 @@ func main() {
 	..........
 }
 ```
-
-
 **main():** Uses 'Entries()' and calls 'cfg.Fuse()'. 'cfg' registers and fuses.
 ```
 entries := Entries()
 errors := cfg.Fuse(entries)
 ```
-
-
-
 ### Register and fuse the components (Dependency Injection pattern)
+Below is a sample of a full config file: Please read comments.
 
+```
+package cfg
+
+import (
+	"github.com/rvauradkar1/fuse/fuse"
+)
+
+// Find is used by application packages as a Resource Locator
+var Find func(name string) interface{}
+
+// Fuse is used by application main package to provide a list of compoenets to register and fuse
+func Fuse(entries []fuse.Entry) []error {
+    // Instance of Fuse
+	f := fuse.New()
+	// 'cfg.Find' now points to the 'fuse.Find'
+	Find = f.Find
+	// Register entries
+	errors := f.Register(entries)
+	if len(errors) != 0 {
+		return errors
+	}
+	// Wire dependencies
+	return f.Wire()
+}
+
+```
+
+###  Provide a finder to find stateful components (Resource Locator pattern)
+
+Code snippet from above provides this functionality:
+
+```
+// Find is used by application packages as a Resource Locator
+var Find func(name string) interface{}
+```
+
+```
+// 'cfg.Find' now points to the 'fuse.Find'
+	Find = f.Find
+```
