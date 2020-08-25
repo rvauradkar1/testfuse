@@ -1,7 +1,7 @@
 # testfuse
 
 Simple project to demonstrate usage of the fuse and mock packages.  
-These packages are available at the repo - [https://github.com/rvauradkar1/fuse]()
+These packages are available at the repo - [https://github.com/rvauradkar1/fuse](https://github.com/rvauradkar1/fuse)
 
 Please review the package structure - folders and sub-folders are provided to
 demonstrate wiring of components and generation of mocks to aid unit-testing.
