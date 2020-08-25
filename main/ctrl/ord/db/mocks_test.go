@@ -12,17 +12,21 @@ type MockDBSvc struct{
 
 
 
+
+
 type AddCart func(s1 string) (error)
-var MockAddCart AddCart
+var MockDBSvc_AddCart AddCart
 func (p *MockDBSvc) AddCart(s1 string) (error) {
-	return MockAddCart( s1)
+	return MockDBSvc_AddCart( s1)
 }
 
 
+
+
 type AddOrder func(s1 string) (error)
-var MockAddOrder AddOrder
+var MockDBSvc_AddOrder AddOrder
 func (p *MockDBSvc) AddOrder(s1 string) (error) {
-	return MockAddOrder( s1)
+	return MockDBSvc_AddOrder( s1)
 }
 
 // End of mock for DBSvc and its methods

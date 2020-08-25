@@ -27,15 +27,15 @@ func init() {
 
 func Test_Add(t *testing.T) {
 	c := CartSvc{CacheSvc: mockCache, DBSvc: mockDB}
-	MockSaveOrder = func(cart string) error {
+	MockOrderSvc_SaveOrder = func(cart string) error {
 		fmt.Println("Inside MockSaveOrder... ")
 		return nil
 	}
-	MockAddCrt = func(cart string) error {
+	MockCacheSvc_AddCrt = func(cart string) error {
 		fmt.Println("Inside MockAddCrt... ")
 		return nil
 	}
-	MockAddCart = func(cart string) error {
+	MockDBSvc_AddCart = func(cart string) error {
 		fmt.Println("Inside MockAddCart... ")
 		return nil
 	}

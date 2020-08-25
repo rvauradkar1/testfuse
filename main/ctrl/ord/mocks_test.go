@@ -14,17 +14,21 @@ type MockCacheSvc struct{
 
 
 
+
+
 type AddCrt func(s1 string) (error)
-var MockAddCrt AddCrt
+var MockCacheSvc_AddCrt AddCrt
 func (p *MockCacheSvc) AddCrt(s1 string) (error) {
-	return MockAddCrt( s1)
+	return MockCacheSvc_AddCrt( s1)
 }
 
 
+
+
 type AddOrd func(s1 string) (error)
-var MockAddOrd AddOrd
+var MockCacheSvc_AddOrd AddOrd
 func (p *MockCacheSvc) AddOrd(s1 string) (error) {
-	return MockAddOrd( s1)
+	return MockCacheSvc_AddOrd( s1)
 }
 
 // End of mock for CacheSvc and its methods
@@ -36,17 +40,21 @@ type MockDBSvc struct{
 
 
 
+
+
 type AddCart func(s1 string) (error)
-var MockAddCart AddCart
+var MockDBSvc_AddCart AddCart
 func (p *MockDBSvc) AddCart(s1 string) (error) {
-	return MockAddCart( s1)
+	return MockDBSvc_AddCart( s1)
 }
 
 
+
+
 type AddOrder func(s1 string) (error)
-var MockAddOrder AddOrder
+var MockDBSvc_AddOrder AddOrder
 func (p *MockDBSvc) AddOrder(s1 string) (error) {
-	return MockAddOrder( s1)
+	return MockDBSvc_AddOrder( s1)
 }
 
 // End of mock for DBSvc and its methods
@@ -60,10 +68,12 @@ DBSvc db.IService
 
 
 
+
+
 type SaveOrder func(s1 string) (error)
-var MockSaveOrder SaveOrder
+var MockOrderSvc_SaveOrder SaveOrder
 func (p *MockOrderSvc) SaveOrder(s1 string) (error) {
-	return MockSaveOrder( s1)
+	return MockOrderSvc_SaveOrder( s1)
 }
 
 // End of mock for OrderSvc and its methods

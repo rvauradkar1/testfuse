@@ -1,12 +1,16 @@
 package auth
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 type IService interface {
 	Auth(user string) error
 }
 
 type AuthSvc struct {
+	t time.Duration
 }
 
 func (a *AuthSvc) Auth(user string) error {

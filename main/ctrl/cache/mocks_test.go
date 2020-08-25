@@ -12,17 +12,21 @@ type MockCacheSvc struct{
 
 
 
+
+
 type AddCrt func(s1 string) (error)
-var MockAddCrt AddCrt
+var MockCacheSvc_AddCrt AddCrt
 func (p *MockCacheSvc) AddCrt(s1 string) (error) {
-	return MockAddCrt( s1)
+	return MockCacheSvc_AddCrt( s1)
 }
 
 
+
+
 type AddOrd func(s1 string) (error)
-var MockAddOrd AddOrd
+var MockCacheSvc_AddOrd AddOrd
 func (p *MockCacheSvc) AddOrd(s1 string) (error) {
-	return MockAddOrd( s1)
+	return MockCacheSvc_AddOrd( s1)
 }
 
 // End of mock for CacheSvc and its methods
