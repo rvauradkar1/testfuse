@@ -1,8 +1,6 @@
 package cfg
 
 import (
-	"fmt"
-
 	"github.com/rvauradkar1/fuse/fuse"
 )
 
@@ -26,12 +24,12 @@ func Entries() []fuse.Entry {
 
 func Fuse(entries []fuse.Entry) []error {
 	f := fuse.New()
-	//find.Find = f.Find
 	Find = f.Find
 	errors := f.Register(entries)
+	if len(errors) != 0 {
+		return errors
+	}
 	errors = f.Wire()
-	fmt.Println(errors)
-
 	return errors
 }
 
