@@ -39,6 +39,11 @@ func main() {
 	ctrl := comp.(*ctrl.OrderController)
 	err := ctrl.Order("raj", "order123")
 	fmt.Println("Return from 1 ", err)
+
+	c := cfg.Find("CartSvc")
+	cart := c.(cart.ICartService)
+	fmt.Println(cart.Add("new cart"))
+	fmt.Println(cart)
 }
 
 func Entries() []fuse.Entry {

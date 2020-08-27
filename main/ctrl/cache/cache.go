@@ -1,5 +1,7 @@
 package cache
 
+import "fmt"
+
 type IService interface {
 	AddOrd(product string) error
 	AddCrt(cart string) error
@@ -17,6 +19,7 @@ func init() {
 }
 
 func (c *CacheSvc) AddCrt(cart string) error {
+	fmt.Println("Inside AddCrt of CacheSvc")
 	if count, ok := cartCounts[cart]; ok {
 		*count++
 		return nil
@@ -27,6 +30,7 @@ func (c *CacheSvc) AddCrt(cart string) error {
 }
 
 func (c *CacheSvc) AddOrd(order string) error {
+	fmt.Println("Inside AddOrd of CacheSvc")
 	if count, ok := orderCounts[order]; ok {
 		*count++
 		return nil

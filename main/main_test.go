@@ -5,14 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/rvauradkar1/fuse/fuse"
 	"github.com/rvauradkar1/fuse/mock"
-	"github.com/rvauradkar1/testfuse/main/ctrl"
-	"github.com/rvauradkar1/testfuse/main/ctrl/auth"
-	"github.com/rvauradkar1/testfuse/main/ctrl/cache"
-	"github.com/rvauradkar1/testfuse/main/ctrl/cart"
-	"github.com/rvauradkar1/testfuse/main/ctrl/ord"
-	"github.com/rvauradkar1/testfuse/main/ctrl/ord/db"
 )
 
 func TestMain(m *testing.M) {
@@ -28,6 +21,7 @@ func Test_s(t *testing.T) {
 	fmt.Println("tttt")
 }
 
+/*
 func Test_register(t *testing.T) {
 	m := mock.New("mock")
 	entries := make([]fuse.Entry, 0)
@@ -39,8 +33,10 @@ func Test_register(t *testing.T) {
 	entries = append(entries, fuse.Entry{Name: "OrderSvc", Instance: &ord.OrderSvc{}})
 	errors := m.Register(entries)
 	fmt.Println("errors = ", errors)
-	m.Generate2()
+	m.Generate()
 }
+
+*/
 
 func Test_reg(t *testing.T) {
 	m := mock.New("main")
@@ -48,6 +44,6 @@ func Test_reg(t *testing.T) {
 	errors := m.Register(entries)
 	fmt.Println(errors)
 
-	m.Generate2()
+	m.Generate()
 
 }

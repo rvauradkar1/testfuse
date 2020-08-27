@@ -1,5 +1,7 @@
 package db
 
+import "fmt"
+
 var cartCounts map[string]*int
 var orderCounts map[string]*int
 
@@ -17,6 +19,7 @@ type DBSvc struct {
 }
 
 func (db *DBSvc) AddCart(cart string) error {
+	fmt.Println("Inside AddCart of DBSvc")
 	if count, ok := cartCounts[cart]; ok {
 		*count++
 		return nil

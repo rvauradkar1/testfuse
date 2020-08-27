@@ -3,6 +3,7 @@
 Simple project to demonstrate usage of the fuse and mock packages.  
 These packages are available at the repo - [https://github.com/rvauradkar1/fuse](https://github.com/rvauradkar1/fuse)
 
+The following component graph is used to demonstrate the usage of fuse/mock.  
 Please review the package structure of this project - folders and sub-folders are provided to
 demonstrate wiring of components and generation of mocks to aid unit-testing.
 
@@ -26,8 +27,8 @@ type Fuse interface {
 	Register(entries []Entry) []error
 	// Wire injects dependencies into components.
 	Wire() []error
-	// Find is needed only for stateful components. Can also be used for stateless in case dependencies are not defined
-	// at instance level
+	// Find is needed only for stateful components. Can also be used for 
+	// stateless in case dependencies are not defined at instance level
 	Find(name string) interface{}
 }
 ```
@@ -40,7 +41,8 @@ Steps to follow:
 4. Register and fuse the components (Dependency Injection pattern)
 5. Provide a finder to find stateful components (Resource Locator pattern)
 
-### Declare components and configure dependencies
+
+### 1. Declare components and configure dependencies
 
 Dependencies are configured using `struct` tags.
 
@@ -55,7 +57,7 @@ type OrderController struct {
 	AuthSvc auth.IService `_fuse:"AuthSvc"`
 }
 ```
-### Create a config package to avoid cyclic dependencies
+### 2. Create a config package to avoid cyclic dependencies
 
 **Note:** Config package is needed for several reasons:
 
@@ -75,7 +77,7 @@ without importing 'fuse'
 <img src="cfg.png" alt="Config Graph" title="Config Graph" class="absent" />
 
 
-### Create a slice of component entries
+### 3. Create a slice of component entries
 
 The component slice is created in the application 'main' package. Helps in:
 1. Isolating dependencies on the 'fuse' package.
@@ -120,7 +122,7 @@ func main() {
 entries := Entries()
 errors := cfg.Fuse(entries)
 ```
-### Register and fuse the components (Dependency Injection pattern)
+### 5. Register and fuse the components (Dependency Injection pattern)
 Below is a sample of a full config file: Please read comments.
 
 ```
@@ -147,10 +149,9 @@ func Fuse(entries []fuse.Entry) []error {
 	// Wire dependencies
 	return f.Wire()
 }
-
 ```
 
-###  Provide a finder to find stateful components (Resource Locator pattern)
+###  5. Provide a finder to find stateful components (Resource Locator pattern)
 
 Code snippet from above provides this functionality:
 
@@ -161,5 +162,82 @@ var Find func(name string) interface{}
 
 ```
 // 'cfg.Find' now points to the 'fuse.Find'
-	Find = f.Find
+Find = f.Find
+```
+
+
+## Usage of package mock
+
+**API for mock:**
+
+```
+type Mock interface {
+	// Register a slice of components
+	Register(entries []fuse.Entry) []error
+	// Find is needed primarily for stateful components.
+	Find(name string) interface{}
+	// Generates mocks
+	Generate() []error
+}
+```
+
+The graph below shows how the mock code generation is laid out.
+
+1. main_test.go - Test file for the application main. It depends on the 'mock' package.
+It uses the 'Entries' method of 'main.go' to register the components.
+2. main.go - The application main file that supplies the component entries.
+3. mock package - depends on the 'fuse' package.
+
+<img src="mock.png" alt="Mock" title="Mock" class="absent" />
+
+### Mock code generation pattern
+
+All mocks are generated based on a fixed pattern.
+
+'AuthSvc' is a registered component. Clients of this package need to mock this dependency during unit-testing.
+
+
+```
+package auth
+
+import (
+	"fmt"
+	"time"
+)
+
+type IService interface {
+	Auth(user string) error
+}
+
+type AuthSvc struct {
+	t time.Duration
+}
+
+func (a *AuthSvc) Auth(user string) error {
+	fmt.Printf("Auth for user [%s]\n", user)
+	return nil
+}
+```
+
+```
+package auth
+
+import (
+	"time"
+)
+
+// Begin of mock for AuthSvc and its methods
+type MockAuthSvc struct {
+	t time.Duration
+}
+
+type Auth func(s1 string) error
+
+var MockAuthSvc_Auth Auth
+
+func (p *MockAuthSvc) Auth(s1 string) error {
+	return MockAuthSvc_Auth(s1)
+}
+
+// End of mock for AuthSvc and its methods
 ```
