@@ -37,10 +37,10 @@ Steps to follow:
 
 <ol>
 <li><a href="#step1">Declare components and configure dependencies</a></li>
-<li>Create a slice of component entries</li>
-<li>Create a config package to avoid cyclic dependencies</li>
-<li>Register and fuse the components (Dependency Injection pattern)</li>
-<li>Provide a finder to find stateful components (Resource Locator pattern)</li>
+<li><a href="#step2">Create a slice of component entries</a></li>
+<li><a href="#step3">Create a config package to avoid cyclic dependencies</a></li>
+<li><a href="#step4">Register and fuse the components (Dependency Injection pattern)</a></li>
+<li><a href="#step5">Provide a finder to find stateful components (Resource Locator pattern)</a></li>
 </ol>
 
 1. Declare components and configure dependencies
@@ -51,8 +51,6 @@ Steps to follow:
 
 
 <div id="step1"><h3>1. Declare components and configure dependencies</h3></div>
-
-### 1. Declare components and configure dependencies
 
 Dependencies are configured using `struct` tags.
 
@@ -67,7 +65,7 @@ type OrderController struct {
 	AuthSvc auth.IService `_fuse:"AuthSvc"`
 }
 ```
-### 2. Create a config package to avoid cyclic dependencies
+<div id="step1"><h3>2. Create a config package to avoid cyclic dependencies</h3></div>
 
 **Note:** Config package is needed for several reasons:
 
@@ -87,7 +85,7 @@ without importing 'fuse'
 <img src="cfg.png" alt="Config Graph" title="Config Graph" class="absent" />
 
 
-### 3. Create a slice of component entries
+<div id="step1"><h3>3. Create a slice of component entries</h3></div>
 
 The component slice is created in the application 'main' package. Helps in:
 1. Isolating dependencies on the 'fuse' package.
@@ -131,8 +129,10 @@ func main() {
 entries := Entries()
 errors := cfg.Fuse(entries)
 ```
+
+
+<div id="step4"><h3>4. Register and fuse the components (Dependency Injection pattern)</h3></div>
 ### 5. Register and fuse the components (Dependency Injection pattern)
-Below is a sample of a full config file: Please read comments.
 
 ```
 package cfg
@@ -160,7 +160,8 @@ func Fuse(entries []fuse.Entry) []error {
 }
 ```
 
-###  5. Provide a finder to find stateful components (Resource Locator pattern)
+
+<div id="step5"><h3>5. Provide a finder to find stateful components (Resource Locator pattern)</h3></div>
 
 Code snippet from above provides this functionality:
 
