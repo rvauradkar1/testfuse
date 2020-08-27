@@ -35,12 +35,22 @@ type Fuse interface {
 
 Steps to follow:
 
+<ol>
+<li><a href="#step1">Declare components and configure dependencies</a></li>
+<li>Create a slice of component entries</li>
+<li>Create a config package to avoid cyclic dependencies</li>
+<li>Register and fuse the components (Dependency Injection pattern)</li>
+<li>Provide a finder to find stateful components (Resource Locator pattern)</li>
+</ol>
+
 1. Declare components and configure dependencies
 2. Create a slice of component entries
 3. Create a config package to avoid cyclic dependencies
 4. Register and fuse the components (Dependency Injection pattern)
 5. Provide a finder to find stateful components (Resource Locator pattern)
 
+
+<div id="step1"><h3>1. Declare components and configure dependencies</h3></div>
 
 ### 1. Declare components and configure dependencies
 
@@ -98,7 +108,6 @@ a new instance is created for each use. If this component has dependencies on ot
 
 ```
 func Entries() []fuse.Entry {
-	fmt.Println("Hello testfuse")
 	entries := make([]fuse.Entry, 0)
 	entries = append(entries, fuse.Entry{Name: "OrdCtrl", State: false, Instance: &ctrl.OrderController{}})
 	entries = append(entries, fuse.Entry{Name: "CartSvc", State: false, Instance: &cart.CartSvc{}})
@@ -137,16 +146,16 @@ var Find func(name string) interface{}
 
 // Fuse is used by application main package to provide a list of compoenets to register and fuse
 func Fuse(entries []fuse.Entry) []error {
-    // Instance of Fuse
+    // Step 1. Instance of Fuse
 	f := fuse.New()
-	// 'cfg.Find' now points to the 'fuse.Find'
+	// Step 2. 'cfg.Find' now points to the 'fuse.Find'
 	Find = f.Find
-	// Register entries
+	// Step 3. Register entries
 	errors := f.Register(entries)
 	if len(errors) != 0 {
 		return errors
 	}
-	// Wire dependencies
+	// Step 4. Wire dependencies
 	return f.Wire()
 }
 ```
@@ -241,3 +250,36 @@ func (p *MockAuthSvc) Auth(s1 string) error {
 
 // End of mock for AuthSvc and its methods
 ```
+
+**** Struct mock
+
+```
+// Original
+type AuthSvc struct {
+	t time.Duration
+}
+// Mock of Original
+type MockAuthSvc struct {
+	t time.Duration
+}
+```
+
+#### Method mock
+
+```
+// Method from interface
+type IService interface {
+	Auth(user string) error
+}
+// Method mock
+type Auth func(s1 string) error
+
+// Client provide a mock implementation
+var MockAuthSvc_Auth Auth
+
+func (p *MockAuthSvc) Auth(s1 string) error {
+    // Mocked method is used instead of real code
+	return MockAuthSvc_Auth(s1)
+} 
+```
+
