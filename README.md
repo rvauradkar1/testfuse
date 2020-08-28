@@ -35,8 +35,8 @@ Steps to follow:
 
 <ol>
 <li><a href="#fuse1">Declare components and configure dependencies</a></li>
-<li><a href="#fuse2">Create a slice of component entries</a></li>
-<li><a href="#fuse3">Create a config package to avoid cyclic dependencies</a></li>
+<li><a href="#fuse2">Create a config package to avoid cyclic dependencies</a></li>
+<li><a href="#fuse3">Create a slice of component entries</a></li>
 <li><a href="#fuse4">Register and fuse the components (Dependency Injection pattern)</a></li>
 <li><a href="#fuse5">Provide a finder to find stateful components (Resource Locator pattern)</a></li>
 </ol>
@@ -57,7 +57,8 @@ the component graph above)
 
 ```
 type OrderController struct {  
- CartSvc *cart.CartSvc `_fuse:"CartSvc"` AuthSvc auth.IService `_fuse:"AuthSvc"`}  
+    CartSvc *cart.CartSvc `_fuse:"CartSvc"` 
+    AuthSvc auth.IService `_fuse:"AuthSvc"`}  
 ```
 
 <div id="fuse2"><h3>2. Create a config package to avoid cyclic dependencies</h3></div>
@@ -261,14 +262,14 @@ Steps to follow:
 <li><a href="#mock4">Generate Mocks</a></li>
 </ol>
 
-<div id="mock2"><h3>1. Create a main_test.go file with a Test_Generate method</h3></div>
+<div id="mock1"><h3>1. Create a main_test.go file with a Test_Generate method</h3></div>
 
 ```
 package main
 
 func Test_Generate(t *testing.T) {
 	fmt.Println("Start mock generation....")
-	
+	.......
 	fmt.Println("End mock generation....")
 }
 ```
@@ -280,6 +281,7 @@ func Test_Generate(t *testing.T) {
 	fmt.Println("Start mock generation....")
 	// Instantiaze mock, "main" is the name of the directory where your application resides
 	m := mock.New("main")
+	......
 	fmt.Println("End mock generation....")
 }
 ```
@@ -295,6 +297,7 @@ func Test_Generate(t *testing.T) {
 	entries := Entries()
 	// Register the entries, mocks are generated based upon the component structures
 	errors := m.Register(entries)
+	......
 	fmt.Println("End mock generation....")
 }
 ```
