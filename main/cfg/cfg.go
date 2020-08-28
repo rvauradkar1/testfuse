@@ -9,12 +9,16 @@ var Find func(name string) interface{}
 
 // Fuse is used by application main package to provide a list of compoenets to register and fuse
 func Fuse(entries []fuse.Entry) []error {
+	// Step 1. Instance of Fuse
 	f := fuse.New()
+	// Step 2. 'cfg.Find' now points to the 'fuse.Find'
 	Find = f.Find
+	// Step 3. Register entries
 	errors := f.Register(entries)
 	if len(errors) != 0 {
 		return errors
 	}
+	// Step 4. Wire dependencies
 	return f.Wire()
 }
 

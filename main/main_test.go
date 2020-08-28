@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"testing"
 
@@ -9,35 +10,31 @@ import (
 )
 
 func TestMain(m *testing.M) {
-	//f, errors := funcName()
-	//fmt.Println(f)
-	//fmt.Println(errors)
 	fmt.Println("Begin test main....")
 	os.Exit(m.Run())
 	fmt.Println("End test main....")
 }
 
-func Test_s(t *testing.T) {
-	fmt.Println("tttt")
+func Test_Generate(t *testing.T) {
+	fmt.Println("Start mock generation....")
+	// Instantiaze mock, "main" is the name of the directory where your application resides
+	m := mock.New("main")
+	// Reuse the 'Entries' method from 'main.go'
+	entries := Entries()
+	// Register the entries, mocks are generated based upon the component structures
+	errors := m.Register(entries)
+	if len(errors) != 0 {
+		log.Fatal(errors)
+	}
+	// Generate the mocks
+	errors = m.Generate()
+	if len(errors) != 0 {
+		log.Fatal(errors)
+	}
+	fmt.Println("End mock generation....")
 }
 
 /*
-func Test_register(t *testing.T) {
-	m := mock.New("mock")
-	entries := make([]fuse.Entry, 0)
-	entries = append(entries, fuse.Entry{Name: "OrdCtrl", Instance: &ctrl.OrderController{}})
-	entries = append(entries, fuse.Entry{Name: "CartSvc", Instance: &cart.CartSvc{}})
-	entries = append(entries, fuse.Entry{Name: "AuthSvc", Instance: &auth.AuthSvc{}})
-	entries = append(entries, fuse.Entry{Name: "CacheSvc", Instance: &cache.CacheSvc{}})
-	entries = append(entries, fuse.Entry{Name: "DBSvc", Instance: &db.DBSvc{}})
-	entries = append(entries, fuse.Entry{Name: "OrderSvc", Instance: &ord.OrderSvc{}})
-	errors := m.Register(entries)
-	fmt.Println("errors = ", errors)
-	m.Generate()
-}
-
-*/
-
 func Test_reg(t *testing.T) {
 	m := mock.New("main")
 	entries := Entries()
@@ -47,3 +44,4 @@ func Test_reg(t *testing.T) {
 	m.Generate()
 
 }
+*/

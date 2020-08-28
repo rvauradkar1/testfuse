@@ -25,6 +25,10 @@ func init() {
 	}
 }
 
+func Test_a(t *testing.T) {
+	fmt.Println("testig.......")
+}
+
 func Test_Add(t *testing.T) {
 	c := CartSvc{CacheSvc: mockCache, DBSvc: mockDB}
 	MockOrderSvc_SaveOrder = func(cart string) error {

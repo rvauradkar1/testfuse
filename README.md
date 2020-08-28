@@ -63,7 +63,8 @@ the component graph above)
 ```
 type OrderController struct {  
     CartSvc *cart.CartSvc `_fuse:"CartSvc"` 
-    AuthSvc auth.IService `_fuse:"AuthSvc"`}  
+    AuthSvc auth.IService `_fuse:"AuthSvc"`
+}  
 ```
 
 <div id="fuse2"><h3>2. Create a config package to avoid cyclic dependencies</h3></div>

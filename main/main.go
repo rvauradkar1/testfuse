@@ -15,20 +15,6 @@ import (
 	"github.com/rvauradkar1/fuse/fuse"
 )
 
-/*
-func main1() {
-	fmt.Println("Hello testfuse")
-	f, errors := funcName()
-	errors = f.Wire()
-	fmt.Println(errors)
-	comp := f.Find("OrdCtrl")
-	ctrl := comp.(*ctrl.OrderController)
-	err := ctrl.Order("raj", "order123")
-	fmt.Println("Return from 1 ", err)
-	//genMocks()
-}
-*/
-
 func main() {
 	fmt.Println("Hello testfuse")
 	entries := Entries()
