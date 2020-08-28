@@ -112,12 +112,25 @@ component entry is recorded as a fuse.Entry with properties:
 
 
 ```
-func Entries() []fuse.Entry {  
- entries := make([]fuse.Entry, 0) entries = append(entries, fuse.Entry{Name: "OrdCtrl", State: false, Instance: &ctrl.OrderController{}}) entries = append(entries, fuse.Entry{Name: "CartSvc", State: false, Instance: &cart.CartSvc{}}) entries = append(entries, fuse.Entry{Name: "AuthSvc", State: false, Instance: &auth.AuthSvc{}}) entries = append(entries, fuse.Entry{Name: "CacheSvc", State: false, Instance: &cache.CacheSvc{}}) entries = append(entries, fuse.Entry{Name: "DBSvc", State: false, Instance: &db.DBSvc{}}) entries = append(entries, fuse.Entry{Name: "OrderSvc", State: true, Instance: &ord.OrderSvc{}})  
- return entries}  
+func Entries() []fuse.Entry {
+	fmt.Println("Hello testfuse")
+	entries := make([]fuse.Entry, 0)
+	entries = append(entries, fuse.Entry{Name: "OrdCtrl", State: false, Instance: &ctrl.OrderController{}})
+	entries = append(entries, fuse.Entry{Name: "CartSvc", State: false, Instance: &cart.CartSvc{}})
+	entries = append(entries, fuse.Entry{Name: "AuthSvc", State: false, Instance: &auth.AuthSvc{}})
+	entries = append(entries, fuse.Entry{Name: "CacheSvc", State: false, Instance: &cache.CacheSvc{}})
+	entries = append(entries, fuse.Entry{Name: "DBSvc", State: false, Instance: &db.DBSvc{}})
+	entries = append(entries, fuse.Entry{Name: "OrderSvc", State: true, Instance: &ord.OrderSvc{}})
+
+	return entries
+} 
   
 func main() {  
- fmt.Println("Hello testfuse") entries := Entries() errors := cfg.Fuse(entries) ..........}  
+    fmt.Println("Hello testfuse") 
+    entries := Entries() 
+    errors := cfg.Fuse(entries) 
+    ..........
+}  
 ```
 
 **main():** Uses 'Entries()' and calls 'cfg.Fuse()'. 'cfg' registers and  
@@ -130,20 +143,31 @@ errors := cfg.Fuse(entries)
 
 
 <div id="fuse4"><h3>4. Register and fuse the components (Dependency Injection pattern)</h3></div>
-### 5. Register and fuse the components (Dependency Injection pattern)
 
 ```
-package cfg  
-  
-import (  
- "github.com/rvauradkar1/fuse/fuse")  
-  
-// Find is used by application packages as a Resource Locator  
-var Find func(name string) interface{}  
-  
-// Fuse is used by application main package to provide a list of compoenets to register and fuse  
-func Fuse(entries []fuse.Entry) []error {  
- // Step 1. Instance of Fuse f := fuse.New() // Step 2. 'cfg.Find' now points to the 'fuse.Find' Find = f.Find // Step 3. Register entries errors := f.Register(entries) if len(errors) != 0 { return errors } // Step 4. Wire dependencies return f.Wire()}  
+package cfg
+
+import (
+	"github.com/rvauradkar1/fuse/fuse"
+)
+
+// Find is used by application packages as a Resource Locator
+var Find func(name string) interface{}
+
+// Fuse is used by application main package to provide a list of compoenets to register and fuse
+func Fuse(entries []fuse.Entry) []error {
+	// Step 1. Instance of Fuse
+	f := fuse.New()
+	// Step 2. 'cfg.Find' now points to the 'fuse.Find'
+	Find = f.Find
+	// Step 3. Register entries
+	errors := f.Register(entries)
+	if len(errors) != 0 {
+		return errors
+	}
+	// Step 4. Wire dependencies
+	return f.Wire()
+}
 ```
 
 
@@ -191,19 +215,26 @@ mock this dependency during unit-testing.
 
 
 ```
-package auth  
+package auth
+
+import (
+	"fmt"
+	"time"
+)
+
+type IService interface {
+	Auth(user string) error
+}
+
+type AuthSvc struct {
+	t time.Duration
+}
+
+func (a *AuthSvc) Auth(user string) error {
+	fmt.Printf("Auth for user [%s]\n", user)
+	return nil
+}
   
-import (  
- "fmt" "time")  
-  
-type IService interface {  
- Auth(user string) error}  
-  
-type AuthSvc struct {  
- t time.Duration}  
-  
-func (a *AuthSvc) Auth(user string) error {  
- fmt.Printf("Auth for user [%s]\n", user) return nil}  
 ```
 
 ```
@@ -221,7 +252,8 @@ type Auth func(s1 string) error
 var MockAuthSvc_Auth Auth  
   
 func (p *MockAuthSvc) Auth(s1 string) error {  
- return MockAuthSvc_Auth(s1)}  
+    return MockAuthSvc_Auth(s1)
+}  
   
 // End of mock for AuthSvc and its methods  
 ```
@@ -231,10 +263,12 @@ func (p *MockAuthSvc) Auth(s1 string) error {
 ```
 // Original  
 type AuthSvc struct {  
- t time.Duration}  
+    t time.Duration
+}  
 // Mock of Original  
 type MockAuthSvc struct {  
- t time.Duration}  
+    t time.Duration
+}  
 ```
 
 #### Method mock
@@ -250,7 +284,9 @@ type Auth func(s1 string) error
 var MockAuthSvc_Auth Auth  
   
 func (p *MockAuthSvc) Auth(s1 string) error {  
- // Mocked method is used instead of real code return MockAuthSvc_Auth(s1)} ```  
+    // Mocked method is used instead of real code 
+    return MockAuthSvc_Auth(s1)
+}  
  ```
 
 Steps to follow:
