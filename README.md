@@ -27,8 +27,13 @@ A graph of the components is provided below.
 ```
 // Fuse is used by clients to configure dependency injection (DI)  
 type Fuse interface {  
- // Register a slice of components Register(entries []Entry) []error // Wire injects dependencies into components. Wire() []error // Find is needed only for stateful components. Can also be used for   // stateless in case dependencies are not defined at instance level  
- Find(name string) interface{}}  
+    // Register a slice of components 
+    Register(entries []Entry) []error 
+    // Wire injects dependencies into components. 
+    Wire() []error 
+    // Find is needed only for stateful components. Can also be used for stateless in case dependencies are not defined at instance level  
+    Find(name string) interface{}
+}  
 ```
 
 Steps to follow:
@@ -192,7 +197,13 @@ Find = f.Find
 
 ```
 type Mock interface {  
- // Register a slice of components Register(entries []fuse.Entry) []error // Find is needed primarily for stateful components. Find(name string) interface{} // Generates mocks Generate() []error}  
+    // Register a slice of components 
+    Register(entries []fuse.Entry) []error 
+    // Find is needed primarily for stateful components. 
+    Find(name string) interface{} 
+    // Generates mocks 
+    Generate() []error
+}  
 ```
 
 The graph below shows how the mock code generation is laid out.
