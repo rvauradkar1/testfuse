@@ -31,7 +31,7 @@ func Test_a(t *testing.T) {
 
 func Test_Add(t *testing.T) {
 	c := CartSvc{CacheSvc: mockCache, DBSvc: mockDB}
-	MockOrderSvc_SaveOrder = func(cart string) error {
+	MockOrderSvc_SaveOrder = func(status, cart string) error {
 		fmt.Println("Inside MockSaveOrder... ")
 		return nil
 	}

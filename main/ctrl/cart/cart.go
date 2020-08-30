@@ -24,7 +24,7 @@ func (c *CartSvc) Add(cart string) error {
 	fmt.Println("Calling find on OrderSvc111")
 	o := cfg.Find("OrderSvc")
 	ordSvc := o.(ord.IService)
-	err := ordSvc.SaveOrder(cart)
+	err := ordSvc.SaveOrder(cart, "stat")
 	if err != nil {
 		return err
 	}

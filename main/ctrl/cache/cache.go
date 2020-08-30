@@ -3,7 +3,7 @@ package cache
 import "fmt"
 
 type IService interface {
-	AddOrd(product string) error
+	AddOrd(product string, status string) error
 	AddCrt(cart string) error
 }
 
@@ -29,7 +29,7 @@ func (c *CacheSvc) AddCrt(cart string) error {
 	return nil
 }
 
-func (c *CacheSvc) AddOrd(order string) error {
+func (c *CacheSvc) AddOrd(order string, status string) error {
 	fmt.Println("Inside AddOrd of CacheSvc")
 	if count, ok := orderCounts[order]; ok {
 		*count++

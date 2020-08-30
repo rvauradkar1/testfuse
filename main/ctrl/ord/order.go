@@ -8,7 +8,7 @@ import (
 )
 
 type IService interface {
-	SaveOrder(order string) error
+	SaveOrder(order string, status string) error
 }
 
 type OrderSvc struct {
@@ -16,12 +16,11 @@ type OrderSvc struct {
 	DBSvc    db.IService    `_fuse:"DBSvc"`
 }
 
-func (o *OrderSvc) SaveOrder(order string) error {
+func (o *OrderSvc) SaveOrder(order string, status string) error {
 	fmt.Println("Begin of AddOrder  on OrderSvc")
 	err := o.DBSvc.AddOrder(order)
 	if err != nil {
 		return err
 	}
-	o.CacheSvc.AddOrd(order)
-	return nil
+	return o.CacheSvc.AddOrd(order, status)
 }
