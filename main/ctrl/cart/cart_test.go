@@ -47,5 +47,11 @@ func Test_Add(t *testing.T) {
 	if err != nil {
 		t.Errorf("there should have been no error but got %s\n", err)
 	}
-	fmt.Println(c)
+
+	fmt.Println("Number of calls for MockOrderSvc_SaveOrder = ", len(Calls("MockOrderSvc_SaveOrder")))
+
+	for i, c := range Calls("MockOrderSvc_SaveOrder") {
+		fmt.Println(" i ", i, " c = ", c)
+	}
+
 }

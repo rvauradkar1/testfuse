@@ -12,16 +12,12 @@ func Test_SaveOrder(t *testing.T) {
 
 	fmt.Println(svc.SaveOrder("new order", "stats"))
 
-	fmt.Println("Num called = ", calls("MockDBSvc_AddOrder").NumCalls())
-
-	for i, p := range calls("MockDBSvc_AddOrder").First() {
-		fmt.Println(fmt.Sprintf("No : [%d], val = [%v]", i, p))
+	for i, c := range Calls("MockDBSvc_AddOrder") {
+		fmt.Println(" i ", i, " c = ", c)
 	}
 
-	fmt.Println("Num called = ", calls("MockCacheSvc_AddOrd").NumCalls())
-
-	for i, p := range calls("MockCacheSvc_AddOrd").First() {
-		fmt.Println(fmt.Sprintf("No : [%d], val = [%v]", i, p))
+	for i, c := range Calls("MockCacheSvc_AddOrd") {
+		fmt.Println(" i ", i, " c = ", c)
 	}
 
 }

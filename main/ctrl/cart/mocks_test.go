@@ -8,48 +8,53 @@ import (
 )
 
 // Start of method calls and parameter capture
-var stats = make(map[string]*FuncCalls, 0)
+var stats = make(map[string]*funcCalls, 0)
 
-type FuncCalls struct {
+type funcCalls struct {
 	Count  int
 	Params [][]interface{}
 }
 
-func (f FuncCalls) First() []interface{} {
-	for _, p := range f.Params {
-		return p
+type CallInfo struct {
+	Ok     bool
+	Name   string
+	Params []interface{}
+}
+
+type Params []interface{}
+
+func Calls(name string) []Params {
+	call := forCall(name)
+	if call.Count > 0 {
+		calls := make([]Params, 0)
+		for i := 0; i < call.Count; i++ {
+			calls = append(calls, call.Params[i])
+		}
+		return calls
 	}
-	return []interface{}{}
-}
-
-func (f FuncCalls) All() [][]interface{} {
-	return f.Params
-}
-
-func (f FuncCalls) NumCalls() int {
-	return f.Count
+	return []Params{}
 }
 
 func capture(key string, params []interface{}) {
 	val, ok := stats[key]
 	if !ok {
-		val = &FuncCalls{}
+		val = &funcCalls{}
 		val.Count = 0
 		val.Params = make([][]interface{}, 0)
 		stats[key] = val
 	}
 	val.Count++
 	val.Params = append(val.Params, params)
+
 }
 
-func calls(key string) FuncCalls {
+func forCall(key string) funcCalls {
 	if val, ok := stats[key]; ok {
 		return *val
 	}
-	return FuncCalls{}
+	return funcCalls{}
 }
 // End of method calls and parameter capture
-
 
 // Begin of mock for CacheSvc and its methods
 type MockCacheSvc struct{
