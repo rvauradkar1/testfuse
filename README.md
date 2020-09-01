@@ -1,5 +1,12 @@
 
-# testfuse
+# testfuse - Guide to usage of library [fuse](https://github.com/rvauradkar1/fuse)
+
+<ol>
+<li><a href="#part1">Usage of Package fuse</a></li>
+<li><a href="#part2">Usage of Package mock</a></li>
+<li><a href="#part3">Writing Unit Tests</a></li>
+<li><a href="#part4">Capturing Method Calls and Parameters</a></li>
+</ol>
 
 Simple project to demonstrate usage of the fuse and mock packages.  
 These packages are available at the repo -  
@@ -20,7 +27,11 @@ A graph of the components is provided below.
 <img src="graph.png" alt="Component Graph" title="Component Graph" class="absent" />
 
 
+<div id=""part1">
 ## Usage of package fuse
+</div>
+
+<div id="part1"><h2>1. Usage of Package fuse</h3></div>
 
 **API for fuse:**
 
@@ -193,6 +204,8 @@ Find = f.Find
 
 
 ## Usage of package mock
+
+<div id="part2"><h2>2. Usage of Package mock</h3></div>
 
 **API for mock:**
 
@@ -373,3 +386,9 @@ func Test_Generate(t *testing.T) {
 	fmt.Println("End mock generation....")
 }
 ```
+
+
+<div id="part3"><h2>3. Writing Unit Tests</h3></div>
+
+
+<div id="part4"><h2>4. Capturing Method Calls and Parameters</h3></div>
