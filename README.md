@@ -388,7 +388,85 @@ func Test_Generate(t *testing.T) {
 ```
 
 
-<div id="part3"><h2>3. Writing Unit Tests</h3></div>
+<div id="part3"><h2>3. Writing Unit Tests</h2></div>
+
+<ol>
+<li><a href="#t1">Create Component Instance</a></li>
+<li><a href="#t2">Mock Methods</a></li>
+<li><a href="#t3">Execute Logic</a></li>
+<li><a href="#t4">Capturing Method Calls and Parameters</a></li>
+</ol>
+
+<div id="t1"><h3>1. Create Component Instance</h3></div>
+
+Following code creates a component instance and intializes the mocked dependencies.
+```
+func Test_SaveOrder(t *testing.T) {
+	// Make instance and initialize mocked dependencies.
+	svc := OrderSvc{DBSvc: &MockDBSvc{}, CacheSvc: &MockCacheSvc{}}
+    .......
+}
+```
+
+<div id="t2"><h3>2. Mock Methods</h3></div>
+```
+func Test_SaveOrder(t *testing.T) {
+   	// Make instance and initialize mocked dependencies.
+	svc := OrderSvc{DBSvc: &MockDBSvc{}, CacheSvc: &MockCacheSvc{}}
+	// Mock dependent methods.
+	MockDBSvc_AddOrder = func(order string) error { return nil }
+	MockCacheSvc_AddOrd = func(cart string, status string) error { return nil }
+    .........
+}
+```
+
+<div id="t3"><h3>3. Execute Logic</h3></div>
+
+```
+func Test_SaveOrder(t *testing.T) {
+   	// Make instance and initialize mocked dependencies.
+	svc := OrderSvc{DBSvc: &MockDBSvc{}, CacheSvc: &MockCacheSvc{}}
+	// Mock dependent methods.
+	MockDBSvc_AddOrder = func(order string) error { return nil }
+	MockCacheSvc_AddOrd = func(cart string, status string) error { return nil }
+	// Execute logic
+	err := svc.SaveOrder("new order", "stats")
+	// Error handling omitted
+	fmt.Println(err)
+	........
+}
+```
+
+<div id="t4"><h3>4. Capture Method Calls and Parameters/h3></div>
+
+The generated code provided a method called 'Calls' with signaturs:
+
+```
+func Calls(name string) []Params
+```
+Tests call to method to ensure that method was called. A slice of parameters is returned.
+These are the parameters passed to the method. Multiple method calls result in slice length > 1.
+
+```
+func Test_SaveOrder(t *testing.T) {
+   	// Make instance and initialize mocked dependencies.
+	svc := OrderSvc{DBSvc: &MockDBSvc{}, CacheSvc: &MockCacheSvc{}}
+	// Mock dependent methods.
+	MockDBSvc_AddOrder = func(order string) error { return nil }
+	MockCacheSvc_AddOrd = func(cart string, status string) error { return nil }
+	// Execute logic
+	err := svc.SaveOrder("new order", "stats")
+	// Error handling omitted
+	fmt.Println(err)
+	// Ensure call to MockDBSvc_AddOrder was made
+	for i, c := range Calls("MockDBSvc_AddOrder") {
+		fmt.Println(" i ", i, " c = ", c)
+	}
+	// Ensure call to MockCacheSvc_AddOrd was made
+	for i, c := range Calls("MockCacheSvc_AddOrd") {
+		fmt.Println(" i ", i, " c = ", c)
+	}
+}
+```
 
 
-<div id="part4"><h2>4. Capturing Method Calls and Parameters</h3></div>
