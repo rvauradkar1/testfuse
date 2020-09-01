@@ -5,7 +5,6 @@
 <li><a href="#part1">Usage of Package fuse</a></li>
 <li><a href="#part2">Usage of Package mock</a></li>
 <li><a href="#part3">Writing Unit Tests</a></li>
-<li><a href="#part4">Capturing Method Calls and Parameters</a></li>
 </ol>
 
 Simple project to demonstrate usage of the fuse and mock packages.  
@@ -213,8 +212,6 @@ Find = f.Find
 type Mock interface {  
     // Register a slice of components 
     Register(entries []fuse.Entry) []error 
-    // Find is needed primarily for stateful components. 
-    Find(name string) interface{} 
     // Generates mocks 
     Generate() []error
 }  
@@ -409,6 +406,7 @@ func Test_SaveOrder(t *testing.T) {
 ```
 
 <div id="t2"><h3>2. Mock Methods</h3></div>
+
 ```
 func Test_SaveOrder(t *testing.T) {
    	// Make instance and initialize mocked dependencies.
@@ -421,6 +419,8 @@ func Test_SaveOrder(t *testing.T) {
 ```
 
 <div id="t3"><h3>3. Execute Logic</h3></div>
+
+Call `svc.SaveOrder`
 
 ```
 func Test_SaveOrder(t *testing.T) {
@@ -442,10 +442,13 @@ func Test_SaveOrder(t *testing.T) {
 The generated code provided a method called 'Calls' with signaturs:
 
 ```
+type Params []interface{}
+
 func Calls(name string) []Params
 ```
-Tests call to method to ensure that method was called. A slice of parameters is returned.
-These are the parameters passed to the method. Multiple method calls result in slice length > 1.
+Tests call this method to ensure that dependent method was called. A slice of parameters is returned.
+These are the parameters passed to the method. Multiple called to dependent  
+method result in slice length > 1.
 
 ```
 func Test_SaveOrder(t *testing.T) {
