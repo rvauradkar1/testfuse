@@ -3,8 +3,31 @@
 
 <ol>
 <li><a href="#part1">Usage of Package fuse</a></li>
+<div>
+<ol>
+<li><a href="#fuse1">Declare components and configure dependencies</a></li>
+<li><a href="#fuse2">Create a config package to avoid cyclic dependencies</a></li>
+<li><a href="#fuse3">Create a slice of component entries</a></li>
+<li><a href="#fuse4">Register and fuse the components (Dependency Injection pattern)</a></li>
+<li><a href="#fuse5">Provide a finder to find stateful components (Resource Locator pattern)</a></li>
+</ol>
+</div>
 <li><a href="#part2">Usage of Package mock</a></li>
+<div>
+<ol>
+<li><a href="#mock1">Create a main_test.go file with a Test_Generate method</a></li>
+<li><a href="#mock2">Instantiate "mock"</a></li>
+<li><a href="#mock3">Register Component Entries</a></li>
+<li><a href="#mock4">Generate Mocks</a></li>
+</ol>
+</div>
 <li><a href="#part3">Writing Unit Tests</a></li>
+<ol>
+<li><a href="#t1">Create Component Instance</a></li>
+<li><a href="#t2">Mock Methods</a></li>
+<li><a href="#t3">Execute Logic</a></li>
+<li><a href="#t4">Capturing Method Calls and Parameters</a></li>
+</ol>
 </ol>
 
 Simple project to demonstrate usage of the fuse and mock packages.  
@@ -25,10 +48,6 @@ A graph of the components is provided below.
 
 <img src="graph.png" alt="Component Graph" title="Component Graph" class="absent" />
 
-
-<div id=""part1">
-## Usage of package fuse
-</div>
 
 <div id="part1"><h2>1. Usage of Package fuse</h3></div>
 
@@ -107,7 +126,7 @@ The component slice is created in the application 'main' package. Helps
 in:
 1. Isolating dependencies on the 'fuse' package.
 2. One place to define the graph(s).
-3. Multiple slices can be creatd in case of different component graphs.
+3. Multiple slices can be created in case of different component graphs.
 4. 'mock' package uses these slices to create mock for unit-testing.
 
 **Example:**
@@ -128,6 +147,13 @@ component entry is recorded as a fuse.Entry with properties:
 
 
 ```
+func main() {  
+    fmt.Println("Hello testfuse") 
+    entries := Entries() 
+    errors := cfg.Fuse(entries) 
+    ..........
+}  
+
 func Entries() []fuse.Entry {
 	fmt.Println("Hello testfuse")
 	entries := make([]fuse.Entry, 0)
@@ -140,13 +166,6 @@ func Entries() []fuse.Entry {
 
 	return entries
 } 
-  
-func main() {  
-    fmt.Println("Hello testfuse") 
-    entries := Entries() 
-    errors := cfg.Fuse(entries) 
-    ..........
-}  
 ```
 
 **main():** Uses 'Entries()' and calls 'cfg.Fuse()'. 'cfg' registers and  
@@ -159,6 +178,9 @@ errors := cfg.Fuse(entries)
 
 
 <div id="fuse4"><h3>4. Register and fuse the components (Dependency Injection pattern)</h3></div>
+
+Following code explains it step by step:
+
 
 ```
 package cfg
@@ -202,8 +224,6 @@ Find = f.Find
 ```
 
 
-## Usage of package mock
-
 <div id="part2"><h2>2. Usage of Package mock</h3></div>
 
 **API for mock:**
@@ -236,6 +256,8 @@ All mocks are generated based on a fixed pattern.
 mock this dependency during unit-testing.
 
 
+#### Component definition
+
 ```
 package auth
 
@@ -259,28 +281,35 @@ func (a *AuthSvc) Auth(user string) error {
   
 ```
 
+#### Mock Component definition
+
+
 ```
-package auth  
-  
-import (  
- "time")  
-  
-// Begin of mock for AuthSvc and its methods  
-type MockAuthSvc struct {  
- t time.Duration}  
-  
-type Auth func(s1 string) error  
-  
-var MockAuthSvc_Auth Auth  
-  
-func (p *MockAuthSvc) Auth(s1 string) error {  
-    return MockAuthSvc_Auth(s1)
-}  
-  
-// End of mock for AuthSvc and its methods  
+package auth
+
+import (
+	"time"
+)
+
+// Begin of mock for AuthSvc and its methods
+type MockAuthSvc struct {
+	t time.Duration
+}
+
+type Auth func(s1 string) error
+
+var MockAuthSvc_Auth Auth
+
+func (p *MockAuthSvc) Auth(s1 string) error {
+	capture("MockAuthSvc_Auth", []interface{}{s1})
+	return MockAuthSvc_Auth(s1)
+}
+
+// End of mock for AuthSvc and its methods
+
 ```
 
-**** Struct mock
+#### Struct mock
 
 ```
 // Original  
@@ -298,7 +327,9 @@ type MockAuthSvc struct {
 ```
 // Method from interface  
 type IService interface {  
- Auth(user string) error}  
+    Auth(user string) error
+ }  
+ 
 // Method mock  
 type Auth func(s1 string) error  
   
@@ -437,9 +468,9 @@ func Test_SaveOrder(t *testing.T) {
 }
 ```
 
-<div id="t4"><h3>4. Capture Method Calls and Parameters/h3></div>
+<div id="t4"><h3>4. Capture Method Calls and Parameters</h3></div>
 
-The generated code provided a method called 'Calls' with signaturs:
+The generated code provided a method called 'Calls' with signature:
 
 ```
 type Params []interface{}
@@ -449,6 +480,7 @@ func Calls(name string) []Params
 Tests call this method to ensure that dependent method was called. A slice of parameters is returned.
 These are the parameters passed to the method. Multiple called to dependent  
 method result in slice length > 1.
+
 
 ```
 func Test_SaveOrder(t *testing.T) {

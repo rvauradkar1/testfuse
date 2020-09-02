@@ -1,9 +1,7 @@
-
-
 package auth
-import (
-"time"
 
+import (
+	"time"
 )
 
 // Start of method calls and parameter capture
@@ -53,24 +51,21 @@ func forCall(key string) funcCalls {
 	}
 	return funcCalls{}
 }
+
 // End of method calls and parameter capture
 
 // Begin of mock for AuthSvc and its methods
-type MockAuthSvc struct{
+type MockAuthSvc struct {
 	t time.Duration
-
 }
 
+type Auth func(s1 string) error
 
-
-
-
-type Auth func(s1 string) (error)
 var MockAuthSvc_Auth Auth
-func (p *MockAuthSvc) Auth(s1 string) (error) {
-	capture("MockAuthSvc_Auth", []interface{}{s1 })
-	return MockAuthSvc_Auth( s1)
+
+func (p *MockAuthSvc) Auth(s1 string) error {
+	capture("MockAuthSvc_Auth", []interface{}{s1})
+	return MockAuthSvc_Auth(s1)
 }
 
 // End of mock for AuthSvc and its methods
-
