@@ -16,11 +16,15 @@ func Test_SaveOrder(t *testing.T) {
 	// Error handling omitted
 	fmt.Println(err)
 	// Ensure call to MockDBSvc_AddOrder was made
-	for i, c := range Calls("MockDBSvc_AddOrder") {
-		fmt.Println(" i ", i, " c = ", c)
+	fmt.Println("Number of calls to MockDBSvc_AddOrder = ", NumCalls("MockDBSvc_AddOrder"))
+	// Print params passed to MockDBSvc_AddOrder
+	for i, c := range CallParams("MockDBSvc_AddOrder") {
+		fmt.Println(" Call Number ", i, " Params` = ", c)
 	}
 	// Ensure call to MockCacheSvc_AddOrd was made
-	for i, c := range Calls("MockCacheSvc_AddOrd") {
-		fmt.Println(" i ", i, " c = ", c)
+	fmt.Println("Number of calls to MockCacheSvc_AddOrd = ", NumCalls("MockCacheSvc_AddOrd"))
+	// Print params passed to MockCacheSvc_AddOrd
+	for i, c := range CallParams("MockCacheSvc_AddOrd") {
+		fmt.Println(" Call Number ", i, " Params` = ", c)
 	}
 }

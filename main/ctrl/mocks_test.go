@@ -26,7 +26,12 @@ type CallInfo struct {
 
 type Params []interface{}
 
-func Calls(name string) []Params {
+func NumCalls(name string) int {
+	call := forCall(name)
+	return call.Count
+}
+
+func CallParams(name string) []Params {
 	call := forCall(name)
 	if call.Count > 0 {
 		calls := make([]Params, 0)

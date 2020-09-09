@@ -3,17 +3,10 @@ package main
 import (
 	"fmt"
 	"log"
-	"os"
 	"testing"
 
 	"github.com/rvauradkar1/fuse/mock"
 )
-
-func TestMain(m *testing.M) {
-	fmt.Println("Begin test main....")
-	os.Exit(m.Run())
-	fmt.Println("End test main....")
-}
 
 func Test_Generate(t *testing.T) {
 	fmt.Println("Start mock generation....")
@@ -33,15 +26,3 @@ func Test_Generate(t *testing.T) {
 	}
 	fmt.Println("End mock generation....")
 }
-
-/*
-func Test_reg(t *testing.T) {
-	m := mock.New("main")
-	entries := Entries()
-	errors := m.Register(entries)
-	fmt.Println(errors)
-
-	m.Generate()
-
-}
-*/

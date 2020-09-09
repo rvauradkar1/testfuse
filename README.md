@@ -250,7 +250,8 @@ The graph below shows how the mock code generation is laid out.
 
 ### Mock code generation pattern
 
-All mocks are generated based on a fixed pattern.
+All mocks are generated based on a fixed pattern and available in a Go file
+named mocks_test.go.
 
 'AuthSvc' is a registered component. Clients of this package need to  
 mock this dependency during unit-testing.
