@@ -77,11 +77,11 @@ Steps to follow:
 
 
 <div id="fuse1"><h3>1. Declare components and configure dependencies</h3></div>
+Components are defined using `struct`.
 
 Dependencies are configured using `struct` tags.
 
-**Example**: The code below defines a `struct` which is later registered  
-as a component. This component depends on 2 other components (look at  
+**Example 1 - Stateless dependencies**: The code below defines a `struct`. This component depends on 2 other components (look at  
 the component graph above)
 
 1. CartSvc (pointer variable) - tagged with key _fuse and the name of  
@@ -94,6 +94,16 @@ type OrderController struct {
     CartSvc *cart.CartSvc `_fuse:"CartSvc"` 
     AuthSvc auth.IService `_fuse:"AuthSvc"`
 }  
+```
+
+**Example 2 - Stateful dependencies**: The code below defines a `struct`.
+
+1. DEPS_ interface{} - tagged with key _deps and a comma-delimited string of stateful dependencies.
+These are not mandatory for DI but are useful during mock code generation.
+```
+type CartSvc struct {
+	DEPS_    interface{}    `_deps:"OrderSvc"`
+}
 ```
 
 <div id="fuse2"><h3>2. Create a config package to avoid cyclic dependencies</h3></div>
