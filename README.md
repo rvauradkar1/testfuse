@@ -26,7 +26,7 @@
 <li><a href="#t1">Create Component Instance</a></li>
 <li><a href="#t2">Mock Methods</a></li>
 <li><a href="#t3">Execute Logic</a></li>
-<li><a href="#t4">Capturing Method Calls and Parameters</a></li>
+<li><a href="#t4">Recording Method Calls and Parameters</a></li>
 </ol>
 </ol>
 
@@ -479,7 +479,7 @@ func Test_SaveOrder(t *testing.T) {
 }
 ```
 
-<div id="t4"><h3>4. Capture Method Calls and Parameters</h3></div>
+<div id="t4"><h3>4. Recording Method Calls and Parameters</h3></div>
 
 The generated code provided a method called 'Calls' with signature:
 
