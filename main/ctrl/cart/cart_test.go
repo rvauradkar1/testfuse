@@ -48,10 +48,13 @@ func Test_Add(t *testing.T) {
 		t.Errorf("there should have been no error but got %s\n", err)
 	}
 
-	fmt.Println("Number of calls for MockOrderSvc_SaveOrder = ", len(Calls("MockOrderSvc_SaveOrder")))
+	fmt.Println("Number of calls for MockOrderSvc_SaveOrder = ", len(CallParams("MockOrderSvc_SaveOrder")))
 
-	for i, c := range Calls("MockOrderSvc_SaveOrder") {
-		fmt.Println(" i ", i, " c = ", c)
+	for i, params := range CallParams("MockOrderSvc_SaveOrder") {
+		fmt.Println(" param number = ", i, " params = ", params)
+		for j, p := range params {
+			fmt.Println(" param ", j, " = ", p)
+		}
 	}
 
 }
