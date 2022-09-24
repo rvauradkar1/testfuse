@@ -12,7 +12,7 @@ import (
 	"github.com/rvauradkar1/testfuse/main/ctrl/ord"
 	"github.com/rvauradkar1/testfuse/main/ctrl/ord/db"
 
-	"github.com/rvauradkar1/fuse/fuse"
+	"github.com/rvauradkar1/fuse"
 )
 
 func main() {
@@ -22,14 +22,14 @@ func main() {
 	fmt.Println(errors)
 
 	comp := cfg.Find("OrdCtrl")
-	ctrl := comp.(*ctrl.OrderController)
-	err := ctrl.Order("raj", "order123")
+	ctrl1 := comp.(*ctrl.OrderController)
+	err := ctrl1.Order("raj", "order123")
 	fmt.Println("Return from 1 ", err)
 
 	c := cfg.Find("CartSvc")
-	cart := c.(cart.ICartService)
-	fmt.Println(cart.Add("new cart"))
-	fmt.Println(cart)
+	cart1 := c.(cart.ICartService)
+	fmt.Println(cart1.Add("new cart1"))
+	fmt.Println(cart1)
 }
 
 func Entries() []fuse.Entry {

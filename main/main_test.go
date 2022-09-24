@@ -5,7 +5,7 @@ import (
 	"log"
 	"testing"
 
-	"github.com/rvauradkar1/fuse/mock"
+	"github.com/rvauradkar1/mockgen"
 )
 
 func Test_Generate(t *testing.T) {

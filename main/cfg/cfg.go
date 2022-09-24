@@ -1,7 +1,7 @@
 package cfg
 
 import (
-	"github.com/rvauradkar1/fuse/fuse"
+	"github.com/rvauradkar1/fuse"
 )
 
 // Find is used by application packages as a Resource Locator
